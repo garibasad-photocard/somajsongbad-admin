@@ -773,7 +773,7 @@ function PdfBlock({ block, onChange, onDelete, onAddBelow }) {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       const { media } = res.data
-      onChange(block.id, { pdfUrl: `https://somajsongbad-backend.onrender.com${media.url}`, pdfName: file.name })
+      onChange(block.id, { pdfUrl: media.url && media.url.startsWith('http') ? media.url : `https://somajsongbad-backend.onrender.com${media.url}`, pdfName: file.name })
     } catch (err) {
       console.error(err)
       alert('পিডিএফ আপলোড ব্যর্থ হয়েছে।')
@@ -1282,7 +1282,7 @@ export default function ArticleEditor() {
       category, subCategory, division, district, upazila,
       newsPositions, source, bylines, tags, metaTitle, metaDesc, focusKeyword, canonicalUrl,
       photoCaption, status, scheduledPublishTime, assigneeName, isPremium, enableAudioReader, enableComments,
-      coverImage: coverImagePreview ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : '',
+      coverImage: coverImagePreview ? coverImagePreview.startsWith('https://somajsongbad-backend.onrender.com') ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : coverImagePreview : '',
       videoUrl, videoCaption,
       assignmentId,
       edition,
@@ -1392,7 +1392,7 @@ export default function ArticleEditor() {
           setPrintReady(a.printEdition?.readyForPrint || false)
           setPrintPriority(a.printEdition?.printPriority || 3)
           setPrintEditionObj(a.printEdition || {})
-          setCoverImagePreview(a.coverImage ? `https://somajsongbad-backend.onrender.com${a.coverImage}` : '')
+          setCoverImagePreview(a.coverImage ? (a.coverImage.startsWith('http') ? a.coverImage : `https://somajsongbad-backend.onrender.com${a.coverImage}`) : '')
           if (a.blocks && a.blocks.length > 0) setBlocks(a.blocks)
           else if (a.content) setBlocks([{ id: 1, type: 'text', content: a.content }])
         } catch (err) {
@@ -1492,14 +1492,17 @@ export default function ArticleEditor() {
 
       const { media, duplicate } = res.data
       const baseUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'https://somajsongbad-backend.onrender.com';
+
+      // If URL already starts with http (Cloudinary), use as-is; otherwise prepend baseUrl
+      const resolveUrl = (url) => url && url.startsWith('http') ? url : `${baseUrl}${url}`;
       
       if (duplicate) {
-        setDuplicateConfirm({ url: `${baseUrl}${duplicate}`, name: media.name })
+        setDuplicateConfirm({ url: resolveUrl(duplicate), name: media.name })
         return
       }
 
-      setCoverImagePreview(`${baseUrl}${media.url}`)
-      markImageUsed(`${baseUrl}${media.url}`)
+      setCoverImagePreview(resolveUrl(media.url))
+      markImageUsed(resolveUrl(media.url))
     } catch (err) {
       console.error(err)
     }
@@ -1519,7 +1522,7 @@ export default function ArticleEditor() {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       const { media } = res.data
-      setVideoUrl(`https://somajsongbad-backend.onrender.com${media.url}`)
+      setVideoUrl(media.url && media.url.startsWith('http') ? media.url : `https://somajsongbad-backend.onrender.com${media.url}`)
     } catch (err) {
       console.error(err)
       alert('ভিডিও আপলোড ব্যর্থ হয়েছে।')
@@ -1634,7 +1637,7 @@ export default function ArticleEditor() {
         sharedToFacebook,
         sharedToTwitter,
         sharedToInstagram,
-        coverImage: coverImagePreview ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : '',
+        coverImage: coverImagePreview ? coverImagePreview.startsWith('https://somajsongbad-backend.onrender.com') ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : coverImagePreview : '',
         videoUrl,
         videoCaption,
         assignmentId,

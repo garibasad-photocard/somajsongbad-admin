@@ -773,7 +773,7 @@ function PdfBlock({ block, onChange, onDelete, onAddBelow }) {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       const { media } = res.data
-      onChange(block.id, { pdfUrl: `https://somajsongbad-backend.onrender.com${media.url}`, pdfName: file.name })
+      onChange(block.id, { pdfUrl: media.url && media.url.startsWith('http') ? media.url : `https://somajsongbad-backend.onrender.com${media.url}`, pdfName: file.name })
     } catch (err) {
       console.error(err)
       alert('পিডিএফ আপলোড ব্যর্থ হয়েছে।')
@@ -1318,7 +1318,7 @@ export default function PhotoStoryEditor() {
       category, subCategory, division, district, upazila,
       newsPositions, source, byline, tags, metaTitle, metaDesc,
       photoCaption, status: 'draft', assigneeName, isPremium, enableAudioReader, enableComments,
-      coverImage: coverImagePreview ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : '',
+      coverImage: coverImagePreview ? coverImagePreview.startsWith('https://somajsongbad-backend.onrender.com') ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : coverImagePreview : '',
       videoUrl, videoCaption,
       assignmentId,
       edition,
@@ -1416,7 +1416,7 @@ export default function PhotoStoryEditor() {
           setPrintReady(a.printEdition?.readyForPrint || false)
           setPrintPriority(a.printEdition?.printPriority || 3)
           setPrintEditionObj(a.printEdition || {})
-          setCoverImagePreview(a.coverImage ? `https://somajsongbad-backend.onrender.com${a.coverImage}` : '')
+          setCoverImagePreview(a.coverImage ? (a.coverImage.startsWith('http') ? a.coverImage : `https://somajsongbad-backend.onrender.com${a.coverImage}`) : '')
           if (a.blocks && a.blocks.length > 0) setBlocks(a.blocks)
           else if (a.content) setBlocks([{ id: 1, type: 'text', content: a.content }])
         } catch (err) {
@@ -1506,12 +1506,12 @@ export default function PhotoStoryEditor() {
       const { media, duplicate } = res.data
       
       if (duplicate) {
-        setDuplicateConfirm({ url: `https://somajsongbad-backend.onrender.com${duplicate}`, name: media.name })
+        setDuplicateConfirm({ url: duplicate && duplicate.startsWith('http') ? duplicate : `https://somajsongbad-backend.onrender.com${duplicate}`, name: media.name })
         return
       }
 
-      setCoverImagePreview(`https://somajsongbad-backend.onrender.com${media.url}`)
-      markImageUsed(`https://somajsongbad-backend.onrender.com${media.url}`)
+      setCoverImagePreview(media.url && media.url.startsWith('http') ? media.url : `https://somajsongbad-backend.onrender.com${media.url}`)
+      markImageUsed(media.url && media.url.startsWith('http') ? media.url : `https://somajsongbad-backend.onrender.com${media.url}`)
     } catch (err) {
       console.error(err)
     }
@@ -1531,7 +1531,7 @@ export default function PhotoStoryEditor() {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       const { media } = res.data
-      setVideoUrl(`https://somajsongbad-backend.onrender.com${media.url}`)
+      setVideoUrl(media.url && media.url.startsWith('http') ? media.url : `https://somajsongbad-backend.onrender.com${media.url}`)
     } catch (err) {
       console.error(err)
       alert('ভিডিও আপলোড ব্যর্থ হয়েছে।')
@@ -1616,7 +1616,7 @@ export default function PhotoStoryEditor() {
         sharedToFacebook,
         sharedToTwitter,
         sharedToInstagram,
-        coverImage: coverImagePreview ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : '',
+        coverImage: coverImagePreview ? coverImagePreview.startsWith('https://somajsongbad-backend.onrender.com') ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : coverImagePreview : '',
         videoUrl,
         videoCaption,
         assignmentId,
