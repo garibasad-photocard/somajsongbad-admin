@@ -1207,6 +1207,7 @@ export default function ArticleEditor() {
   const [saving, setSaving] = useState(false)
   const [isAutoSaving, setIsAutoSaving] = useState(false)
   const [coverImagePreview, setCoverImagePreview] = useState('')
+  const coverImageManuallySet = useRef(false)
   const [showMediaPicker, setShowMediaPicker] = useState(false)
   const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [duplicateConfirm, setDuplicateConfirm] = useState(null)
@@ -1393,7 +1394,9 @@ export default function ArticleEditor() {
           setPrintReady(a.printEdition?.readyForPrint || false)
           setPrintPriority(a.printEdition?.printPriority || 3)
           setPrintEditionObj(a.printEdition || {})
-          setCoverImagePreview(a.coverImage ? (a.coverImage.startsWith('http') ? a.coverImage : `https://somajsongbad-backend.onrender.com${a.coverImage}`) : '')
+          if (!coverImageManuallySet.current) {
+            setCoverImagePreview(a.coverImage ? (a.coverImage.startsWith('http') ? a.coverImage : `https://somajsongbad-backend.onrender.com${a.coverImage}`) : '')
+          }
           if (a.blocks && a.blocks.length > 0) setBlocks(a.blocks)
           else if (a.content) setBlocks([{ id: 1, type: 'text', content: a.content }])
         } catch (err) {
@@ -1512,6 +1515,7 @@ export default function ArticleEditor() {
 
       const finalUrl = resolveUrl(media.url)
       console.log('Setting coverImagePreview to:', finalUrl)
+      coverImageManuallySet.current = true
       setCoverImagePreview(finalUrl)
       markImageUsed(finalUrl)
     } catch (err) {
@@ -2401,7 +2405,7 @@ export default function ArticleEditor() {
           </div>
           {showMediaPicker && (
             <MediaPickerModal
-              onSelect={(url) => setCoverImagePreview(url)}
+              onSelect={(url) => { coverImageManuallySet.current = true; setCoverImagePreview(url) }}
               onClose={() => setShowMediaPicker(false)}
             />
           )}
