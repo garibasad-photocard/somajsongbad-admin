@@ -1493,18 +1493,27 @@ export default function ArticleEditor() {
       })
 
       const { media, duplicate } = res.data
+      console.log('Upload response:', res.data)
+      console.log('media.url:', media?.url)
+      
       const baseUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'https://somajsongbad-backend.onrender.com';
 
-      // If URL already starts with http (Cloudinary), use as-is; otherwise prepend baseUrl
-      const resolveUrl = (url) => url && url.startsWith('http') ? url : `${baseUrl}${url}`;
+      const resolveUrl = (url) => {
+        if (!url) return '';
+        if (url.startsWith('http')) return url;
+        return `${baseUrl}${url}`;
+      };
       
       if (duplicate) {
         setDuplicateConfirm({ url: resolveUrl(duplicate), name: media.name })
+        setUploadingPhoto(false)
         return
       }
 
-      setCoverImagePreview(resolveUrl(media.url))
-      markImageUsed(resolveUrl(media.url))
+      const finalUrl = resolveUrl(media.url)
+      console.log('Setting coverImagePreview to:', finalUrl)
+      setCoverImagePreview(finalUrl)
+      markImageUsed(finalUrl)
     } catch (err) {
       console.error('Upload error:', err)
       const msg = err?.response?.data?.message || err?.message || 'ছবি আপলোড ব্যর্থ হয়েছে।'
