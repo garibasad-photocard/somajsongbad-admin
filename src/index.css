@@ -1,0 +1,123 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── লোকাল ফন্ট: SolaimanLipi (Free Bengali Font) ── */
+@font-face {
+  font-family: 'SolaimanLipi';
+  src: url('/fonts/SolaimanLipi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SolaimanLipi';
+  src: url('/fonts/SolaimanLipi-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ──────────────────────────────────────────────
+   বাংলা ফন্ট CSS ভেরিয়েবল
+   Heading  → SolaimanLipi Bold   (সব শিরোনাম)
+   Body     → SolaimanLipi        (পরিষ্কার, পঠনযোগ্য)
+   UI/EN    → Inter               (ইন্টারফেস লেবেল)
+────────────────────────────────────────────── */
+:root {
+  --font-bengali-heading: 'SolaimanLipi', sans-serif;
+  --font-bengali-body:    'SolaimanLipi', 'Hind Siliguri', sans-serif;
+  --font-ui:              'Inter', 'SolaimanLipi', sans-serif;
+}
+
+/* ── গ্লোবাল বেস টাইপোগ্রাফি ── */
+*,
+*::before,
+*::after {
+  font-family: var(--font-bengali-body);
+}
+
+html,
+body,
+#root {
+  font-family: var(--font-bengali-body);
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
+}
+
+/* ── হেডিং — প্রথম আলো সিরিফ ফিল ── */
+h1, h2, h3, h4, h5, h6,
+.bn-heading {
+  font-family: var(--font-bengali-heading);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+/* ── ইনপুট, বাটন, লেবেল — Hind Siliguri ── */
+input,
+textarea,
+select,
+button,
+label,
+th,
+td,
+p,
+li,
+span,
+a {
+  font-family: var(--font-bengali-body);
+}
+
+/* ── ইউটিলিটি ক্লাস ── */
+.font-bengali-body    { font-family: var(--font-bengali-body) !important; }
+.font-bengali-heading { font-family: var(--font-bengali-heading) !important; }
+.font-ui              { font-family: var(--font-ui) !important; }
+
+/* ── Tailwind font-family override (Bengali first) ── */
+@layer base {
+  html {
+    font-family: var(--font-bengali-body);
+  }
+}
+
+@layer utilities {
+  @keyframes bbc-slide-right {
+    0% { transform: translateX(-100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes bbc-expand-right {
+    0% { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 0 0 0); }
+  }
+  @keyframes bbc-slide-down {
+    0% { transform: translateY(-100%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes aj-reveal-up {
+    0% { transform: translateY(100%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes aj-expand-width {
+    0% { width: 0; opacity: 0; }
+    100% { width: 100%; opacity: 1; }
+  }
+  @keyframes fade-in-delayed {
+    0%, 50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .animate-bbc-slide-right { animation: bbc-slide-right 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .animate-bbc-expand-right { animation: bbc-expand-right 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards; }
+  .animate-bbc-slide-down { animation: bbc-slide-down 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.6s backwards; }
+  
+  .animate-aj-reveal-up { animation: aj-reveal-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards; }
+  .animate-aj-expand-width { animation: aj-expand-width 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  .animate-fade-in-delayed { animation: fade-in-delayed 0.8s ease-out forwards; }
+}
