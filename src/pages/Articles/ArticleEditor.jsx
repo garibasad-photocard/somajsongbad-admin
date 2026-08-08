@@ -1220,6 +1220,7 @@ export default function ArticleEditor() {
   const [videoUrl, setVideoUrl] = useState('')
   const [videoCaption, setVideoCaption] = useState('')
   const [uploadingVideo, setUploadingVideo] = useState(false)
+  const [uploadingPhoto, setUploadingPhoto] = useState(false)
   const [metaTitle, setMetaTitle] = useState('')
   const [metaDesc, setMetaDesc] = useState('')
   const [focusKeyword, setFocusKeyword] = useState('')
@@ -1486,6 +1487,7 @@ export default function ArticleEditor() {
     formData.append('file', croppedFile)
     
     try {
+      setUploadingPhoto(true)
       const res = await api.post('/media/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
@@ -1504,7 +1506,11 @@ export default function ArticleEditor() {
       setCoverImagePreview(resolveUrl(media.url))
       markImageUsed(resolveUrl(media.url))
     } catch (err) {
-      console.error(err)
+      console.error('Upload error:', err)
+      const msg = err?.response?.data?.message || err?.message || 'ছবি আপলোড ব্যর্থ হয়েছে।'
+      alert(`❌ আপলোড ব্যর্থ: ${msg}`)
+    } finally {
+      setUploadingPhoto(false)
     }
   }
 
@@ -2281,9 +2287,9 @@ export default function ArticleEditor() {
                     <span>🖼️</span> কভার ফটো
                   </h3>
                   <div className="flex flex-wrap items-center gap-3">
-                    <label className="flex items-center gap-2 cursor-pointer border border-gray-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2.5 text-sm font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors shadow-sm">
-                      <Upload size={16} className="text-indigo-600 dark:text-indigo-400" /> লোকাল থেকে ব্রাউজ
-                      <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                    <label className={`flex items-center gap-2 cursor-pointer border border-gray-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2.5 text-sm font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors shadow-sm ${uploadingPhoto ? 'opacity-60 cursor-wait' : ''}`}>
+                      <Upload size={16} className="text-indigo-600 dark:text-indigo-400" /> {uploadingPhoto ? 'আপলোড হচ্ছে...' : 'লোকাল থেকে ব্রাউজ'}
+                      <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} disabled={uploadingPhoto} />
                     </label>
                     <button
                       onClick={() => setShowMediaPicker(true)}
