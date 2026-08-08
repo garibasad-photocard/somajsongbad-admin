@@ -773,7 +773,7 @@ function PdfBlock({ block, onChange, onDelete, onAddBelow }) {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       const { media } = res.data
-      onChange(block.id, { pdfUrl: `http://localhost:5001${media.url}`, pdfName: file.name })
+      onChange(block.id, { pdfUrl: `https://somajsongbad-backend.onrender.com${media.url}`, pdfName: file.name })
     } catch (err) {
       console.error(err)
       alert('পিডিএফ আপলোড ব্যর্থ হয়েছে।')
@@ -952,7 +952,7 @@ function RelatedNewsPicker({ onSelect, onClose, currentCategory, currentTags, cu
                 onClose(); 
               }}
                 className="w-full flex items-center gap-3 px-5 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-left group">
-                {a.coverImage && <img src={a.coverImage.startsWith('http') ? a.coverImage : `http://localhost:5001${a.coverImage}`} alt="" className="w-16 h-12 object-cover rounded-lg flex-shrink-0 border border-gray-200 dark:border-slate-700" />}
+                {a.coverImage && <img src={a.coverImage.startsWith('http') ? a.coverImage : `https://somajsongbad-backend.onrender.com${a.coverImage}`} alt="" className="w-16 h-12 object-cover rounded-lg flex-shrink-0 border border-gray-200 dark:border-slate-700" />}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-gray-800 dark:text-slate-200 font-medium line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">{a.title}</p>
                   <div className="flex items-center gap-2 mt-1">
@@ -1164,7 +1164,7 @@ export default function ArticleEditor() {
     const unlockOnLeave = () => {
       const token = localStorage.getItem('cms_token');
       if (token) {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+        const apiUrl = import.meta.env.VITE_API_URL || 'https://somajsongbad-backend.onrender.com/api';
         fetch(`${apiUrl}/articles/${id}/unlock`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
@@ -1282,7 +1282,7 @@ export default function ArticleEditor() {
       category, subCategory, division, district, upazila,
       newsPositions, source, bylines, tags, metaTitle, metaDesc, focusKeyword, canonicalUrl,
       photoCaption, status, scheduledPublishTime, assigneeName, isPremium, enableAudioReader, enableComments,
-      coverImage: coverImagePreview ? coverImagePreview.replace('http://localhost:5001', '') : '',
+      coverImage: coverImagePreview ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : '',
       videoUrl, videoCaption,
       assignmentId,
       edition,
@@ -1392,7 +1392,7 @@ export default function ArticleEditor() {
           setPrintReady(a.printEdition?.readyForPrint || false)
           setPrintPriority(a.printEdition?.printPriority || 3)
           setPrintEditionObj(a.printEdition || {})
-          setCoverImagePreview(a.coverImage ? `http://localhost:5001${a.coverImage}` : '')
+          setCoverImagePreview(a.coverImage ? `https://somajsongbad-backend.onrender.com${a.coverImage}` : '')
           if (a.blocks && a.blocks.length > 0) setBlocks(a.blocks)
           else if (a.content) setBlocks([{ id: 1, type: 'text', content: a.content }])
         } catch (err) {
@@ -1491,14 +1491,15 @@ export default function ArticleEditor() {
       })
 
       const { media, duplicate } = res.data
+      const baseUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'https://somajsongbad-backend.onrender.com';
       
       if (duplicate) {
-        setDuplicateConfirm({ url: `http://localhost:5001${duplicate}`, name: media.name })
+        setDuplicateConfirm({ url: `${baseUrl}${duplicate}`, name: media.name })
         return
       }
 
-      setCoverImagePreview(`http://localhost:5001${media.url}`)
-      markImageUsed(`http://localhost:5001${media.url}`)
+      setCoverImagePreview(`${baseUrl}${media.url}`)
+      markImageUsed(`${baseUrl}${media.url}`)
     } catch (err) {
       console.error(err)
     }
@@ -1518,7 +1519,7 @@ export default function ArticleEditor() {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       const { media } = res.data
-      setVideoUrl(`http://localhost:5001${media.url}`)
+      setVideoUrl(`https://somajsongbad-backend.onrender.com${media.url}`)
     } catch (err) {
       console.error(err)
       alert('ভিডিও আপলোড ব্যর্থ হয়েছে।')
@@ -1633,7 +1634,7 @@ export default function ArticleEditor() {
         sharedToFacebook,
         sharedToTwitter,
         sharedToInstagram,
-        coverImage: coverImagePreview ? coverImagePreview.replace('http://localhost:5001', '') : '',
+        coverImage: coverImagePreview ? coverImagePreview.replace('https://somajsongbad-backend.onrender.com', '') : '',
         videoUrl,
         videoCaption,
         assignmentId,
