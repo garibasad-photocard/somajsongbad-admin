@@ -1564,7 +1564,7 @@ export default function ArticleEditor() {
   const handleEditorAction = async (action) => {
     setSaving(true)
     try {
-      const payload = await handleSave('draft')
+      const payload = await handleSave(action === 'publish' ? 'published' : 'draft', true)
       let targetStage = 'sent_to_proof'
       let routeChoice = 'proof'
       if (action === 'publish') { targetStage = 'published'; routeChoice = 'publish' }
@@ -1584,7 +1584,7 @@ export default function ArticleEditor() {
 
   const handleSubmitComponent = async (component) => {
     // First save the current draft state
-    const savedId = await handleSave('draft')
+    const savedId = await handleSave('draft', true)
     if (!savedId) return; // Validation failed
     
     setSaving(true)
@@ -1623,7 +1623,7 @@ export default function ArticleEditor() {
     }
   }
 
-  const handleSave = async (status) => {
+  const handleSave = async (status, skipNavigation = false) => {
     if (!title || title.trim() === '') {
       alert('অনুগ্রহ করে আর্টিকেলের একটি মেইন হেডলাইন (Title) দিন। হেডলাইন ছাড়া সেভ হবে না।');
       return false;
@@ -1693,7 +1693,7 @@ export default function ArticleEditor() {
         return savedId // Return the saved ID
       }
 
-      if (status === 'published') {
+      if (status === 'published' && !skipNavigation) {
         const platforms = []
         if (sharedToFacebook) platforms.push('Facebook')
         if (sharedToTwitter) platforms.push('X')
@@ -1706,7 +1706,9 @@ export default function ArticleEditor() {
         }
       }
 
-      await unlockAndNavigate(assignmentId ? `/workflow/${assignmentId}` : '/articles', articleId)
+      if (!skipNavigation) {
+        await unlockAndNavigate(assignmentId ? `/workflow/${assignmentId}` : '/articles', articleId)
+      }
       return true
     } catch (err) {
       console.error(err)
@@ -1965,7 +1967,7 @@ export default function ArticleEditor() {
                   </button>
                   <button onClick={async () => {
                       setSaving(true);
-                      await handleSave('published');
+                      await handleSave('published', true);
                       try {
                         if (currentAssignment?.edition === 'online') {
                           await api.put(`/workflow/${assignmentId}/online-track`, { workflowStage: 'published', routingChoice: 'own_page', status: 'published' });
