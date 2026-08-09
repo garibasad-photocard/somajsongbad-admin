@@ -1616,7 +1616,8 @@ export default function ArticleEditor() {
       }
     } catch (err) {
       console.error(err)
-      alert('সাবমিট করতে সমস্যা হয়েছে')
+      const errorMsg = err?.response?.data?.message || err?.message || 'অজ্ঞাত ত্রুটি';
+      alert(`সাবমিট করতে সমস্যা হয়েছে: ${errorMsg}`)
     } finally {
       setSaving(false)
     }
