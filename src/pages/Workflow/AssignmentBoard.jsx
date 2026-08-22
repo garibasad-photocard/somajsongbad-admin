@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useWorkflow } from '../../context/WorkflowContext'
 import { useSettings } from '../../context/SettingsContext'
 import {
-  Plus, Clock, CheckCircle, FileText,
+  Plus, Clock,
   ChevronRight, Filter, User, Sparkles, ClipboardList,
   Maximize2, Minimize2
 } from 'lucide-react'
@@ -1215,7 +1215,7 @@ function WorkloadTracker({ assignments, editionFilter, compact = false }) {
 
 // ── Main Page ──
 export default function AssignmentBoard({ defaultFilter = 'all', editionFilter = 'all' }) {
-  const { assignments, updateStatus } = useWorkflow()
+  const { assignments, updateStatus, fetchAssignments } = useWorkflow()
   const { printEditions } = useSettings()
   const { t } = useLanguage()
   const [showModal, setShowModal] = useState(false)
@@ -1223,6 +1223,11 @@ export default function AssignmentBoard({ defaultFilter = 'all', editionFilter =
   const [filterType, setFilterType] = useState('all')
   const [viewMode, setViewMode] = useState('board') // 'board' or 'list'
   const [printEditionFilter, setPrintEditionFilter] = useState('all')
+
+  useEffect(() => {
+    fetchAssignments()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const editionAssignments = assignments.filter(a => {
     if (editionFilter === 'online' && !['online', 'both', 'all'].includes(a.edition)) return false;

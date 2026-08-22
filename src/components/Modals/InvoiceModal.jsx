@@ -1,4 +1,3 @@
-import React from 'react';
 import { X, Printer, FileText, CheckCircle2 } from 'lucide-react';
 
 const InvoiceModal = ({ invoice, onClose }) => {

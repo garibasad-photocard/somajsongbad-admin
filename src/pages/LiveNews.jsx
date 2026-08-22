@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Radio, Plus, Trash2, Power, CheckCircle, Edit, ExternalLink, Calendar, User, Clock, AlertCircle, Sparkles, Pin, Upload, Video, Image, Search } from 'lucide-react'
+import { Radio, Plus, Trash2, Power, Edit, ExternalLink, Calendar, User, Clock, Sparkles, Pin, Video, Image, Search } from 'lucide-react'
 import api from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import { useSettings } from '../context/SettingsContext'
@@ -107,8 +107,10 @@ export default function LiveNews() {
   const [instantScoreText, setInstantScoreText] = useState('')
   const [editingUpdateIndex, setEditingUpdateIndex] = useState(null)
 
+   
   useEffect(() => {
     if (activeEventForUpdate) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setInstantScoreText(activeEventForUpdate.pinnedScoreText || '')
       setInstantCricket(activeEventForUpdate.cricketScore || {
         team1Name: 'বাংলাদেশ',
@@ -174,7 +176,9 @@ export default function LiveNews() {
     }
   }
 
+   
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchLiveNews()
   }, [])
 

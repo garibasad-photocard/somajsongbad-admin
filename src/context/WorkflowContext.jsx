@@ -8,16 +8,17 @@ export function WorkflowProvider({ children }) {
   const [assignments, setAssignments] = useState([])
   const [loadingAssignments, setLoadingAssignments] = useState(true)
   const [notifications, setNotifications] = useState([])
-  const { user } = useContext(AuthContext)
+  const { user, logout } = useContext(AuthContext)
 
+  // Tab Visibility Listener for background updates
   useEffect(() => {
-    if (!user) return; // Only fetch if user is logged in
-    fetchAssignments()
-    fetchNotifications()
-    const interval = setInterval(() => {
-      fetchNotifications()
-    }, 30000) // Poll notifications every 30 seconds
-    return () => clearInterval(interval)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && user) {
+        fetchAssignments()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
   }, [user])
 
   const fetchNotifications = async () => {
@@ -76,6 +77,12 @@ export function WorkflowProvider({ children }) {
       }
     } catch (err) {
       console.error('Failed to fetch assignments', err)
+      if (err.response && err.response.status === 401) {
+        if (logout) {
+          logout()
+          alert('Session expired. Please log in again.')
+        }
+      }
       // Load from localStorage cache if API fails
       try {
         const cached = localStorage.getItem('cms_assignments_cache')

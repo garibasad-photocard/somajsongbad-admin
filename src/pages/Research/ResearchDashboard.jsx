@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Database, Rss, TrendingUp, Lightbulb, ShieldCheck, Target, Calendar, Search, ChevronRight, Sparkles, BarChart2, MessageSquare, Clock, Bookmark, Bell, FileEdit, Brain } from 'lucide-react';
+import { Database, Rss, TrendingUp, Lightbulb, ShieldCheck, Target, Calendar, Search, ChevronRight, Sparkles, Bookmark, Bell, FileEdit, Brain } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function ResearchDashboard({ children }) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { X, Monitor, Tablet, Smartphone } from 'lucide-react';
 
 const OnlineArticlePreviewModal = ({ isOpen, onClose, articleData }) => {

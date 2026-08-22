@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ResearchDashboard from './ResearchDashboard';
-import { Calendar as CalendarIcon, Plus, Edit2, Trash2, Tag, User, List, LayoutGrid, Clock, AlignLeft, AlertCircle } from 'lucide-react';
+import { Calendar as CalendarIcon, Plus, Edit2, Trash2, Tag, User, List, LayoutGrid, AlignLeft, AlertCircle } from 'lucide-react';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { Calendar as BigCalendar, dateFnsLocalizer } from 'react-big-calendar';
@@ -36,10 +36,6 @@ export default function StoryPlanner() {
     notes: ''
   });
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
   const fetchEvents = async () => {
     try {
       const res = await api.get('/events');
@@ -48,6 +44,10 @@ export default function StoryPlanner() {
       console.error('Error fetching events:', err);
     }
   };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   const handleSave = async (e) => {
     e.preventDefault();

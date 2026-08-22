@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ResearchDashboard from './ResearchDashboard';
-import { Brain, Flame, Clock, AlertTriangle, Zap, BarChart3, Share2, FlaskConical, Loader2, Copy, Check, ChevronRight, Sparkles, TrendingUp, Target, MessageSquare } from 'lucide-react';
+import { Brain, Flame, Clock, AlertTriangle, Zap, Share2, FlaskConical, Loader2, Copy, Check, ChevronRight, Sparkles, TrendingUp, MessageSquare } from 'lucide-react';
 import api from '../../services/api';
 
 const tools = [
@@ -120,26 +120,26 @@ const ScoreBadge = ({ score, size = 'md' }) => {
 };
 
 // Result renderer for each tool type
+const Card = ({ title, children, className = '' }) => (
+  <div className={`bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 ${className}`}>
+    {title && <h4 className="font-bold text-slate-700 dark:text-slate-200 mb-3 text-sm uppercase tracking-wide">{title}</h4>}
+    {children}
+  </div>
+);
+
+const Tag = ({ children, color = 'blue' }) => {
+  const colors = {
+    green: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+    amber: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+    red: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+    blue: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+    purple: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+  };
+  return <span className={`px-2.5 py-1 rounded-lg text-xs font-medium ${colors[color] || colors.blue}`}>{children}</span>;
+};
+
 const ResultRenderer = ({ type, result }) => {
   if (!result) return null;
-
-  const Card = ({ title, children, className = '' }) => (
-    <div className={`bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 ${className}`}>
-      {title && <h4 className="font-bold text-slate-700 dark:text-slate-200 mb-3 text-sm uppercase tracking-wide">{title}</h4>}
-      {children}
-    </div>
-  );
-
-  const Tag = ({ children, color = 'blue' }) => {
-    const colors = {
-      green: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-      amber: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-      red: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-      blue: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-      purple: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-    };
-    return <span className={`px-2.5 py-1 rounded-lg text-xs font-medium ${colors[color] || colors.blue}`}>{children}</span>;
-  };
 
   if (type === 'viral') {
     const scoreColor = result.score >= 70 ? 'green' : result.score >= 40 ? 'amber' : 'red';

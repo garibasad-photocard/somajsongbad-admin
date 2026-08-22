@@ -2,11 +2,11 @@ import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import { 
-  BarChart2, Edit3, LayoutTemplate, Link as LinkIcon, Settings, UserPlus, 
-  Users, CheckSquare, Search, FileText, Settings2, Shield, Calendar, X, Menu,
-  Clock, Bell, Zap, PlaySquare, Printer, Crown, User, CheckCircle2,
-  Newspaper, ShieldCheck, Mail, Plus, Filter, Tag, Hash, Layout, Share2, Share,
-  Image, Video, AudioLines, Podcast, MonitorPlay, Radio, UserCheck, BookOpen, Monitor, List, Briefcase, Truck, Calculator, Box,
+  BarChart2, LayoutTemplate, Link as LinkIcon, Settings, UserPlus, 
+  Users, Search, FileText, Shield, Calendar,
+  Clock, PlaySquare, Printer,
+  Newspaper, Plus, Tag, Layout,
+  Image, Video, MonitorPlay, Radio, BookOpen, Monitor, List, Briefcase, Truck, Calculator, Box,
   LayoutDashboard, LogOut, ArrowUpDown, ClipboardList, Database,
   Rss, History, TrendingUp, ChevronDown, ChevronUp, ChevronRight, Globe, RotateCcw,
   GripVertical, Palette, CheckCircle, Lightbulb, UploadCloud, LayoutList, Star, UserCircle, Archive, Coffee, AlignLeft, Film, Cpu, SpellCheck, PlayCircle, Landmark, Wrench, MessageSquare
@@ -193,15 +193,15 @@ const hrItems = [
 
 const newsItems = [
   { to: '/',         key: 'dashboard', icon: LayoutDashboard, label: 'ড্যাশবোর্ড', desc: 'ড্যাশবোর্ডের মূল পাতা', roles: [] },
-  { to: '/workflow/all',      key: 'workflowAll',      icon: ClipboardList, label: 'অ্যাসাইনমেন্ট বোর্ড', desc: 'সব অ্যাসাইনমেন্ট এক জায়গায়', roles: ['reporter', 'sub_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin'] },
-  { to: '/workflow/story-pitches', key: 'storyPitches', icon: FileText, label: 'স্টোরি পিচ বোর্ড', desc: 'স্টোরি আইডিয়া বা পিচ জমা দিন', roles: [] },
-  { to: '/workflow/news-tips', key: 'newsTipPipeline', icon: Radio, label: 'উড়তি খবর (News Tip)', desc: 'উড়তি খবরের পাইপলাইন', roles: [] },
-  { to: '/workflow/deadlines', key: 'deadlineTracker', icon: Clock, label: 'ডেডলাইন ট্র্যাকার', desc: 'অ্যাসাইনমেন্টের ডেডলাইন ট্র্যাক করুন', roles: [] },
-  { to: '/workflow/calendar',  key: 'editorialCalendar', icon: Calendar, label: 'এডিটরিয়াল ক্যালেন্ডার', desc: 'এডিটরিয়াল ক্যালেন্ডার', roles: ['reporter', 'sub_editor', 'editor', 'chief_editor', 'managing_editor', 'admin', 'super_admin'] },
-  { to: '/reports',           key: 'reports',          icon: TrendingUp,    label: 'পারফরম্যান্স রিপোর্ট', desc: 'পারফরম্যান্স ও কাজের রিপোর্ট', roles: ['reporter', 'sub_editor', 'editor', 'chief_editor', 'managing_editor', 'admin', 'super_admin'] },
-  { to: '/versions',          key: 'versions',         icon: History,       label: 'ভার্সন হিস্ট্রি', desc: 'নিউজ ভার্সন হিস্ট্রি', roles: ['reporter', 'sub_editor', 'editor', 'chief_editor', 'managing_editor', 'admin', 'super_admin'] },
-  { to: '/media',            key: 'media',            icon: Image,           label: 'মিডিয়া লাইব্রেরি', desc: 'ছবি ও ভিডিও লাইব্রেরি', roles: [] },
-  { to: '/media/qc',         key: 'mediaQc',          icon: Image,           label: 'মিডিয়া QC', desc: 'মিডিয়া কোয়ালিটি কন্ট্রোল', roles: ['reporter', 'sub_editor', 'editor', 'chief_editor', 'managing_editor', 'admin', 'super_admin'], badge: '3' },
+  { to: '/workflow/all',      key: 'workflowAll',      icon: ClipboardList, label: 'অ্যাসাইনমেন্ট বোর্ড', desc: 'সব অ্যাসাইনমেন্ট এক জায়গায়', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/workflow/story-pitches', key: 'storyPitches', icon: FileText, label: 'স্টোরি পিচ বোর্ড', desc: 'স্টোরি আইডিয়া বা পিচ জমা দিন', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/workflow/news-tips', key: 'newsTipPipeline', icon: Radio, label: 'উড়তি খবর (News Tip)', desc: 'উড়তি খবরের পাইপলাইন', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/workflow/deadlines', key: 'deadlineTracker', icon: Clock, label: 'ডেডলাইন ট্র্যাকার', desc: 'অ্যাসাইনমেন্টের ডেডলাইন ট্র্যাক করুন', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/workflow/calendar',  key: 'editorialCalendar', icon: Calendar, label: 'এডিটরিয়াল ক্যালেন্ডার', desc: 'এডিটরিয়াল ক্যালেন্ডার', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/reports',           key: 'reports',          icon: TrendingUp,    label: 'পারফরম্যান্স রিপোর্ট', desc: 'পারফরম্যান্স ও কাজের রিপোর্ট', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/versions',          key: 'versions',         icon: History,       label: 'ভার্সন হিস্ট্রি', desc: 'নিউজ ভার্সন হিস্ট্রি', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/media',            key: 'media',            icon: Image,           label: 'মিডিয়া লাইব্রেরি', desc: 'ছবি ও ভিডিও লাইব্রেরি', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/media/qc',         key: 'mediaQc',          icon: Image,           label: 'মিডিয়া QC', desc: 'মিডিয়া কোয়ালিটি কন্ট্রোল', roles: ['sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'], badge: '3' },
 ]
 
 const systemItems = [
@@ -214,25 +214,25 @@ const systemItems = [
 ]
 
 const onlineItems = [
-  { to: '/dashboard/online',                 key: 'onlineDashboard', icon: LayoutDashboard, label: 'ড্যাশবোর্ড (অনলাইন)', desc: 'অনলাইন ডেস্ক ড্যাশবোর্ড', roles: ['super_admin', 'admin', 'managing_editor', 'executive_editor', 'chief_editor', 'news_manager', 'chief_reporter', 'reporter'] },
-  { to: '/workflow/trending',         key: 'onlineTrending', icon: TrendingUp, label: 'ট্রেন্ডিং টপিক রাডার', desc: 'গুগল ট্রেন্ডস ও ভাইরাল টপিক', roles: ['chief_editor', 'editor'] },
-  { to: '/workflow/story-pitches/online', key: 'onlinePitches', icon: Lightbulb, label: 'স্টোরি পিচ এপ্রুভাল (অনলাইন)', desc: 'অনলাইন ডেস্কের জন্য স্টোরি পিচ এপ্রুভাল', roles: ['chief_editor', 'editor'] },
-  { to: '/workflow/approval/online', key: 'onlineApproval',  icon: CheckCircle,   label: 'অ্যাসাইনমেন্ট অনুমোদন (অনলাইন)', desc: 'অনলাইনের জন্য অ্যাসাইনমেন্ট অনুমোদন', roles: ['chief_editor', 'editor'] },
-  { to: '/workflow/online',          key: 'onlineWorkflow',  icon: ClipboardList, label: 'অনলাইন অ্যাসাইনমেন্ট বোর্ড', desc: 'অনলাইনের সব অ্যাসাইনমেন্ট বোর্ড', roles: ['super_admin', 'admin', 'managing_editor', 'executive_editor', 'chief_editor', 'news_manager', 'chief_reporter', 'reporter'] },
-  { to: '/workflow/department-queue',   key: 'departmentQueue',  icon: Users,            label: 'ডিপার্টমেন্ট কিউ',               desc: 'রিপোর্টারদের কাজ যাচাই করার ডেস্ক',       roles: ['super_admin', 'admin', 'managing_editor', 'chief_editor', 'chief_reporter', 'desk_editor', 'editor'] },
-  { to: '/articles',         key: 'articles',        icon: FileText,        label: 'অনলাইন আর্টিকেল লিস্ট', desc: 'অনলাইন আর্টিকেলের তালিকা', roles: ['super_admin', 'admin', 'managing_editor', 'executive_editor', 'chief_editor', 'news_manager', 'chief_reporter', 'reporter'] },
-  { to: '/photo-stories',    key: 'photoStories',    icon: Image,           label: 'সকল ফটোস্টোরি', desc: 'ফটোস্টোরির তালিকা', roles: ['super_admin', 'admin', 'managing_editor', 'executive_editor', 'chief_editor', 'news_manager', 'chief_reporter', 'reporter'] },
-  { to: '/photo-stories/new',key: 'newPhotoStory',   icon: Plus,            label: 'নতুন ফটোস্টোরি', desc: 'নতুন ফটোস্টোরি তৈরি করুন', roles: ['super_admin', 'admin', 'managing_editor', 'executive_editor', 'chief_editor', 'news_manager', 'chief_reporter', 'reporter'] },
-  { to: '/rss',              key: 'rss',              icon: Rss,             label: 'এআই নিউজ ফিড', desc: 'এআই ও আরএসএস নিউজ ফিড', roles: ['super_admin', 'admin', 'managing_editor', 'executive_editor', 'chief_editor', 'news_manager', 'chief_reporter', 'reporter'] },
-  { to: '/breaking-news',    key: 'breakingNews',     icon: Radio,           label: 'ব্রেকিং নিউজ', desc: 'ব্রেকিং নিউজ আপডেট', roles: ['reporter', 'sub_editor', 'editor', 'chief_editor', 'managing_editor', 'admin', 'super_admin', 'chief_reporter', 'news_manager'] },
-  { to: '/live-news',        key: 'liveNews',         icon: Radio,           label: 'লাইভ নিউজ', desc: 'লাইভ নিউজ আপডেট', roles: ['super_admin', 'admin', 'managing_editor', 'executive_editor', 'chief_editor', 'news_manager', 'chief_reporter', 'reporter'] },
-  { to: '/national-desk',    key: 'nationalDesk',     icon: Globe,           label: 'জাতীয়/ব্যুরো ডেস্ক', desc: 'মফস্বল ও ব্যুরো নিউজ পরিচালনা', roles: ['reporter', 'editor', 'chief_editor', 'admin'] },
-  { to: '/workflow/online-desk',     key: 'onlineEditorialDesk', icon: Newspaper, label: 'অনলাইন নিউজ ম্যানেজমেন্ট ডেস্ক', desc: 'অনলাইনের নিউজ সম্পাদনার ডেস্ক', roles: ['super_admin', 'admin', 'managing_editor', 'chief_editor', 'news_manager', 'sub_editor', 'editor'] },
-  { to: '/workflow/online-proofreading', key: 'onlineProofreading', icon: CheckCircle, label: 'অনলাইন প্রুফ ডেস্ক', desc: 'অনলাইনের জন্য প্রুফ রিডিং', roles: ['super_admin', 'admin', 'managing_editor', 'chief_editor', 'news_manager', 'proof_reader', 'sub_editor'] },
-  { to: '/homepage-builder', key: 'homepageBuilder',  icon: LayoutDashboard, label: 'হোমপেজ বিল্ডার', desc: 'হোমপেজ লেআউট সাজান', roles: ['reporter', 'editor'] },
-  { to: '/news-sort',        key: 'newsSort',         icon: ArrowUpDown,     label: 'নিউজ সাজান', desc: 'নিউজ সাজানোর তালিকা', roles: ['reporter', 'sub_editor', 'editor', 'chief_editor', 'managing_editor', 'admin', 'super_admin', 'chief_reporter', 'news_manager'] },
-  { to: '/ad-settings',      key: 'adSettings',       icon: LinkIcon,        label: 'বিজ্ঞাপন সেটিংস', desc: 'বিজ্ঞাপন সেটিংস', roles: ['reporter', 'sub_editor', 'editor', 'chief_editor', 'managing_editor', 'admin', 'super_admin'] },
-  { to: '/static-pages',     key: 'staticPages',      icon: FileText,        label: 'স্ট্যাটিক পেজ', desc: 'স্ট্যাটিক পেজ ম্যানেজমেন্ট', roles: ['chief_editor', 'editor'] },
+  { to: '/dashboard/online',                 key: 'onlineDashboard', icon: LayoutDashboard, label: 'ড্যাশবোর্ড (অনলাইন)', desc: 'অনলাইন ডেস্ক ড্যাশবোর্ড', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/workflow/trending',         key: 'onlineTrending', icon: TrendingUp, label: 'ট্রেন্ডিং টপিক রাডার', desc: 'গুগল ট্রেন্ডস ও ভাইরাল টপিক', roles: ['editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/workflow/story-pitches/online', key: 'onlinePitches', icon: Lightbulb, label: 'স্টোরি পিচ এপ্রুভাল (অনলাইন)', desc: 'অনলাইন ডেস্কের জন্য স্টোরি পিচ এপ্রুভাল', roles: ['editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/workflow/approval/online', key: 'onlineApproval',  icon: CheckCircle,   label: 'অ্যাসাইনমেন্ট অনুমোদন (অনলাইন)', desc: 'অনলাইনের জন্য অ্যাসাইনমেন্ট অনুমোদন', roles: ['editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/workflow/online',          key: 'onlineWorkflow',  icon: ClipboardList, label: 'অনলাইন অ্যাসাইনমেন্ট বোর্ড', desc: 'অনলাইনের সব অ্যাসাইনমেন্ট বোর্ড', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/workflow/department-queue',   key: 'departmentQueue',  icon: Users,            label: 'ডিপার্টমেন্ট কিউ',               desc: 'রিপোর্টারদের কাজ যাচাই করার ডেস্ক',       roles: ['sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/articles',         key: 'articles',        icon: FileText,        label: 'অনলাইন আর্টিকেল লিস্ট', desc: 'অনলাইন আর্টিকেলের তালিকা', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/photo-stories',    key: 'photoStories',    icon: Image,           label: 'সকল ফটোস্টোরি', desc: 'ফটোস্টোরির তালিকা', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/photo-stories/new',key: 'newPhotoStory',   icon: Plus,            label: 'নতুন ফটোস্টোরি', desc: 'নতুন ফটোস্টোরি তৈরি করুন', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/rss',              key: 'rss',              icon: Rss,             label: 'এআই নিউজ ফিড', desc: 'এআই ও আরএসএস নিউজ ফিড', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/breaking-news',    key: 'breakingNews',     icon: Radio,           label: 'ব্রেকিং নিউজ', desc: 'ব্রেকিং নিউজ আপডেট', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/live-news',        key: 'liveNews',         icon: Radio,           label: 'লাইভ নিউজ', desc: 'লাইভ নিউজ আপডেট', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/national-desk',    key: 'nationalDesk',     icon: Globe,           label: 'জাতীয়/ব্যুরো ডেস্ক', desc: 'মফস্বল ও ব্যুরো নিউজ পরিচালনা', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin'] },
+  { to: '/workflow/online-desk',     key: 'onlineEditorialDesk', icon: Newspaper, label: 'অনলাইন নিউজ ম্যানেজমেন্ট ডেস্ক', desc: 'অনলাইনের নিউজ সম্পাদনার ডেস্ক', roles: ['sub_editor', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin'] },
+  { to: '/workflow/online-proofreading', key: 'onlineProofreading', icon: CheckCircle, label: 'অনলাইন প্রুফ ডেস্ক', desc: 'অনলাইনের জন্য প্রুফ রিডিং', roles: ['proof_reader', 'sub_editor', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/homepage-builder', key: 'homepageBuilder',  icon: LayoutDashboard, label: 'হোমপেজ বিল্ডার', desc: 'হোমপেজ লেআউট সাজান', roles: ['desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/news-sort',        key: 'newsSort',         icon: ArrowUpDown,     label: 'নিউজ সাজান', desc: 'নিউজ সাজানোর তালিকা', roles: ['reporter', 'sub_editor', 'proof_reader', 'desk_editor', 'editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin', 'chief_reporter'] },
+  { to: '/ad-settings',      key: 'adSettings',       icon: LinkIcon,        label: 'বিজ্ঞাপন সেটিংস', desc: 'বিজ্ঞাপন সেটিংস', roles: ['editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin'] },
+  { to: '/static-pages',     key: 'staticPages',      icon: FileText,        label: 'স্ট্যাটিক পেজ', desc: 'স্ট্যাটিক পেজ ম্যানেজমেন্ট', roles: ['editor', 'chief_editor', 'managing_editor', 'executive_editor', 'news_manager', 'admin', 'super_admin'] },
 ]
 
 const printItems = [
@@ -442,23 +442,26 @@ function NavItem({ to, icon: Icon, label, desc, badge, soon, isCustomizing, inde
 // ─── Collapsible Group Section ────────────────────────────────────
 function GroupSection({ groupKey, user, showRssMenu, menuAccess, isCustomizing, sectionIndex, totalSections, onSectionMove, onSectionDragStart, onSectionDragOver, onSectionDrop, onSectionDragEnd, isSectionDragging, isSectionOver }) {
   const def = GROUP_DEFS[groupKey]
-  if (!def) return null
-  const { icon: GroupIcon, label, color, items } = def
+  const { icon: GroupIcon, label, color, items } = def || {}
   const c = colorMap[color] || colorMap.blue
   const location = useLocation()
+  
+  let shouldReturnNull = false;
+  
+  if (!def) shouldReturnNull = true;
 
   // Filter entire sections based on user's edition
   if (user && user.edition) {
-    if (user.edition === 'print' && (groupKey === 'online' || groupKey === 'multimedia')) return null
-    if (user.edition === 'online' && (groupKey === 'print' || groupKey === 'multimedia')) return null
-    if (user.edition === 'multimedia' && (groupKey === 'print' || groupKey === 'online')) return null
+    if (user.edition === 'print' && (groupKey === 'online' || groupKey === 'multimedia')) shouldReturnNull = true
+    if (user.edition === 'online' && (groupKey === 'print' || groupKey === 'multimedia')) shouldReturnNull = true
+    if (user.edition === 'multimedia' && (groupKey === 'print' || groupKey === 'online')) shouldReturnNull = true
   }
 
   // Filter sections for external users (clients/agencies) vs internal CMS users
   if (user && (user.role === 'client' || user.role === 'agency')) {
-    if (groupKey !== 'client') return null;
+    if (groupKey !== 'client') shouldReturnNull = true;
   } else {
-    if (groupKey === 'client') return null;
+    if (groupKey === 'client') shouldReturnNull = true;
   }
 
 
@@ -469,7 +472,7 @@ function GroupSection({ groupKey, user, showRssMenu, menuAccess, isCustomizing, 
     ? menuAccess[user.role]
     : null
 
-  const filtered = items.filter(item => {
+  const filtered = (items || []).filter(item => {
     if (!user) return false
     
     // Hardcoded exclusions that override localStorage
@@ -482,6 +485,16 @@ function GroupSection({ groupKey, user, showRssMenu, menuAccess, isCustomizing, 
           'salesSetup', 'salesUsers'
         ];
       if (restrictedForReporter.includes(item.key)) return false;
+    }
+
+    if (user.role === 'chief_reporter') {
+      const restrictedForChiefReporter = ['nationalDesk', 'onlineEditorialDesk', 'reports'];
+      if (restrictedForChiefReporter.includes(item.key)) return false;
+    }
+
+    if (user.role === 'news_manager') {
+      const restrictedForNewsManager = ['reports', 'departmentQueue', 'homepageBuilder', 'onlineProofreading'];
+      if (restrictedForNewsManager.includes(item.key)) return false;
     }
 
     // If it's a sales module item, check salesPermissions array if it exists for the user
@@ -508,8 +521,8 @@ function GroupSection({ groupKey, user, showRssMenu, menuAccess, isCustomizing, 
     
     if (item.key === 'rss' && showRssMenu === false) return false
     return true
-  })
-  if (filtered.length === 0) return null
+  }) || []
+  if (filtered.length === 0) shouldReturnNull = true
 
   const hasActive = filtered.some(item => item.to !== '/' && location.pathname.startsWith(item.to))
 
@@ -534,10 +547,12 @@ function GroupSection({ groupKey, user, showRssMenu, menuAccess, isCustomizing, 
       const s = localStorage.getItem(`cms_items_${groupKey}`)
       if (s) return JSON.parse(s)
     } catch (e) {}
-    return filtered.map(i => i.key)
+    return (items || []).map(i => i.key)
   })
   const [itemDragIdx, setItemDragIdx] = useState(null)
   const [itemOverIdx, setItemOverIdx] = useState(null)
+
+  if (shouldReturnNull) return null;
 
   const orderedItems = [...filtered].sort((a, b) => {
     const ia = itemOrder.indexOf(a.key), ib = itemOrder.indexOf(b.key)

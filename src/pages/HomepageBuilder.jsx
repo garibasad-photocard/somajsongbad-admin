@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSettings } from '../context/SettingsContext';
-import { useLanguage } from '../context/LanguageContext';
 import { 
   DndContext, 
   closestCenter, 
@@ -18,7 +17,6 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Plus, Trash2, Save, LayoutDashboard } from 'lucide-react';
-import api from '../services/api';
 
 const TEMPLATES = [
   { value: 'grid-3', label: '৩ কলাম গ্রিড' },

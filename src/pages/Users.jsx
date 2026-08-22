@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, Search, Pencil, Trash2, X, Shield, User as UserIcon } from 'lucide-react'
+import { Plus, Search, Pencil, Trash2, X } from 'lucide-react'
 import api from '../services/api'
 import { useSettings } from '../context/SettingsContext'
 

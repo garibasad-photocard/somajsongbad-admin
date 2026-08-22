@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { CheckCircle, RotateCcw, Clock, ArrowRight, User, AlertTriangle, Play } from 'lucide-react'
+import { CheckCircle, Clock, User, Play } from 'lucide-react'
 import api from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'

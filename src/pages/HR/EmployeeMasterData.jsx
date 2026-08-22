@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
-import { Plus, Edit2, Trash2, Save, X, Search, ChevronRight, User as UserIcon, Briefcase, Award, GraduationCap, FileText, Monitor, Camera, DollarSign, Calendar, Clock, LogOut } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X, Search, User as UserIcon, Briefcase, Award, GraduationCap, FileText, Monitor, Camera, DollarSign, Calendar, Clock, LogOut } from 'lucide-react';
 
 const TAB_SECTIONS = [
   { id: 'basic', icon: UserIcon, label: '১. বেসিক ইনফো' },
@@ -33,10 +33,7 @@ export default function EmployeeMasterData() {
   const [saving, setSaving] = useState(false);
   const [dropdowns, setDropdowns] = useState({});
 
-  useEffect(() => {
-    fetchEmployees();
-    fetchDropdowns();
-  }, []);
+  
 
   const fetchDropdowns = async () => {
     try {
@@ -47,17 +44,12 @@ export default function EmployeeMasterData() {
     }
   };
 
-  const fetchEmployees = async () => {
-    try {
-      setLoading(true);
-      const { data } = await api.get('/hr-employees');
-      setEmployees(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  
+
+  useEffect(() => {
+    fetchEmployees();
+    fetchDropdowns();
+  }, []);
 
   const handleCreateOrUpdate = async (e) => {
     e.preventDefault();

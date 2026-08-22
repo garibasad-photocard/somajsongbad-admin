@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ResearchDashboard from './ResearchDashboard';
-import { Rss, ExternalLink, Loader2, AlertCircle, Clock, Filter } from 'lucide-react';
+import { Rss, Loader2, AlertCircle, Clock, Filter } from 'lucide-react';
 import api from '../../services/api';
 import { formatDistanceToNow } from 'date-fns';
 import { bn } from 'date-fns/locale';
@@ -11,10 +11,6 @@ export default function NewsFeed() {
   const [error, setError] = useState('');
   const [disabled, setDisabled] = useState(false);
   const [filter, setFilter] = useState('all');
-
-  useEffect(() => {
-    fetchFeeds();
-  }, []);
 
   const fetchFeeds = async () => {
     try {
@@ -34,6 +30,10 @@ export default function NewsFeed() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchFeeds();
+  }, []);
 
   const sources = useMemo(() => {
     const uniqueSources = new Set(feeds.map(f => f.source).filter(Boolean));

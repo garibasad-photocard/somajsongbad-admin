@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Calendar, ChevronLeft, ChevronRight, Clock, Pencil, User, History, X, Eye, Check, AlertCircle, FileText, Printer, Layers, FileSpreadsheet, Activity, ExternalLink, Video } from 'lucide-react'
+import { Calendar, ChevronLeft, ChevronRight, Clock, User, History, X, Eye, FileText, Printer, Layers, Activity, Video } from 'lucide-react'
 import { Link, Navigate } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useSettings } from '../context/SettingsContext'
@@ -58,14 +58,6 @@ export default function Dashboard({ dashboardType }) {
   const { journalists } = useSettings()
   const { user } = useAuth()
   
-  // Redirect proof readers to their specific desk
-  if (user?.role === 'proof_reader') {
-    if (user?.edition === 'online') {
-      return <Navigate to="/workflow/online-proofreading" replace />
-    }
-    return <Navigate to="/workflow/print-proof" replace />
-  }
-
   const [assignments, setAssignments] = useState([])
   const [mostReadArticles, setMostReadArticles] = useState([])
   const [showMostReadList, setShowMostReadList] = useState(false)
@@ -92,14 +84,16 @@ export default function Dashboard({ dashboardType }) {
   const [loadingVersionContent, setLoadingVersionContent] = useState(false)
   
   // Filters
-  const [activeBureau, setActiveBureau] = useState('all')
   const [activeDesk, setActiveDesk] = useState('all')
   const [activeStatusFilter, setActiveStatusFilter] = useState('all')
 
+   
   useEffect(() => {
     if (dashboardType && dashboardType !== 'central') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveTab(dashboardType)
     } else if (dashboardType === 'central') {
+       
       setActiveTab('split')
     } else {
       if (user?.edition === 'print') setActiveTab('print')
@@ -109,21 +103,24 @@ export default function Dashboard({ dashboardType }) {
   }, [user, dashboardType])
 
   useEffect(() => {
+    const controller = new AbortController()
     const fetchAssignments = async () => {
       try {
-        const res = await api.get('/workflow')
+        const res = await api.get('/workflow', { signal: controller.signal })
         setAssignments(res.data)
         
         // Also fetch most read
-        const mostReadRes = await api.get('/articles/analytics/most-read')
+        const mostReadRes = await api.get('/articles/analytics/most-read', { signal: controller.signal })
         setMostReadArticles(mostReadRes.data)
       } catch (err) {
+        if (err.name === 'CanceledError' || err.name === 'AbortError') return;
         console.error('Failed to fetch data', err)
       } finally {
         setLoading(false)
       }
     }
     fetchAssignments()
+    return () => controller.abort()
   }, [])
 
   const fetchActivityLogs = async () => {
@@ -138,24 +135,38 @@ export default function Dashboard({ dashboardType }) {
     }
   }
 
+   
   useEffect(() => {
     if (!versionToView) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setVersionContent(null)
       return
     }
+    const controller = new AbortController()
     const fetchFullVersion = async () => {
       setLoadingVersionContent(true)
       try {
-        const res = await api.get(`/articles/versions/${versionToView._id}`)
+        const res = await api.get(`/articles/versions/${versionToView._id}`, { signal: controller.signal })
         setVersionContent(res.data)
       } catch (err) {
+        if (err.name === 'CanceledError' || err.name === 'AbortError') return;
         console.error('Failed to fetch full version content', err)
       } finally {
         setLoadingVersionContent(false)
       }
     }
     fetchFullVersion()
+    return () => controller.abort()
   }, [versionToView])
+
+  // Redirect proof readers to their specific desk (must be AFTER all hooks)
+  if (user?.role === 'proof_reader') {
+    if (user?.edition === 'online') {
+      return <Navigate to="/workflow/online-proofreading" replace />
+    }
+    return <Navigate to="/workflow/print-proof" replace />
+  }
+
 
   // Derived filter options
   const desks = Array.from(new Set(assignments.map(a => Array.isArray(a.categories) ? a.categories[0] : a.category).filter(Boolean)))

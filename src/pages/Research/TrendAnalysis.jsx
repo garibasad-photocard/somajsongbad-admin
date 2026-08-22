@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ResearchDashboard from './ResearchDashboard';
 import { TrendingUp, Search, ExternalLink, Globe, BarChart2 } from 'lucide-react';
 

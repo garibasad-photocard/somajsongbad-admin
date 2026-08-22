@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ResearchDashboard from './ResearchDashboard';
 import { Search, Calendar, User, Tag, Loader2, ArrowRight } from 'lucide-react';
 import api from '../../services/api';

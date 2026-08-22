@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useWorkflow } from '../../context/WorkflowContext'
-import { Clock, CheckCircle, ChevronRight, Video, PlayCircle, Eye, CheckCircle2, UploadCloud, Plus } from 'lucide-react'
-import { useLanguage } from '../../context/LanguageContext'
+import { Clock, ChevronRight, Video, Plus } from 'lucide-react'
 import { NewAssignmentModal } from './AssignmentBoard'
 import api from '../../services/api'
 

@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { UploadCloud, CheckCircle, AlertCircle, Loader, Video, Globe, Camera, Music, X, LayoutDashboard, Clock } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { UploadCloud, CheckCircle, AlertCircle, Loader, Video, Globe, Camera, Music, LayoutDashboard, Clock } from 'lucide-react';
 import api from '../../services/api';
 
 const PLATFORMS = [
@@ -37,13 +37,6 @@ export default function VideoUpload() {
 
   const fileInputRef = useRef(null);
 
-  // Fetch Dashboard Data
-  useEffect(() => {
-    if (activeTab === 'dashboard') {
-      fetchDashboard();
-    }
-  }, [activeTab]);
-
   const fetchDashboard = async () => {
     try {
       setLoadingDashboard(true);
@@ -55,6 +48,13 @@ export default function VideoUpload() {
       setLoadingDashboard(false);
     }
   };
+
+  // Fetch Dashboard Data
+  useEffect(() => {
+    if (activeTab === 'dashboard') {
+      fetchDashboard();
+    }
+  }, [activeTab]);
 
   // Polling for social media upload status
   useEffect(() => {

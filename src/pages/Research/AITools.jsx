@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ResearchDashboard from './ResearchDashboard';
 import { Bot, Lightbulb, Tags, FileText, Send, Loader2, Copy, Check } from 'lucide-react';
 import api from '../../services/api';

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../services/api'
-import { CheckCircle, XCircle, Clock, Eye, AlertTriangle, User, RefreshCw, Printer } from 'lucide-react'
+import { CheckCircle, XCircle, Clock, Eye, User, RefreshCw, Printer } from 'lucide-react'
 
 function formatTime(iso) {
   if (!iso) return ''

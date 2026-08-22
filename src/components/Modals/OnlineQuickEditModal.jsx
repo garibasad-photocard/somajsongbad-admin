@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Save, Edit2 } from 'lucide-react';
 import api from '../../services/api';
 
@@ -9,25 +9,15 @@ const OnlineQuickEditModal = ({ isOpen, onClose, assignmentId, articleId, onSave
   const [content, setContent] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
 
+  
+
+  
+
   useEffect(() => {
     if (isOpen && articleId) {
       loadArticle();
     }
   }, [isOpen, articleId]);
-
-  const loadArticle = async () => {
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const res = await api.get('/articles/' + articleId);
-      setTitle(res.data.title || '');
-      setContent(res.data.content || '');
-    } catch (err) {
-      console.error(err);
-      setErrorMsg('???????? ??? ???? ?????? ???????');
-    }
-    setLoading(false);
-  };
 
   const handleSave = async () => {
     setSaving(true);

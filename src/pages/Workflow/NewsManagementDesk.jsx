@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../services/api'
-import { Newspaper, Clock, User, Eye, CheckCircle, RotateCcw, AlertTriangle, Play, RefreshCw, Send, Pencil } from 'lucide-react'
+import { Newspaper, User, Eye, CheckCircle, Play, RefreshCw, Pencil } from 'lucide-react'
 
 const STAGE_COLORS = {
   sent_to_news_management: { label: 'NM-তে নতুন এসেছে', color: 'bg-blue-100 text-blue-700' },

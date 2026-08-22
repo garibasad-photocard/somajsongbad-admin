@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Upload, Search, Trash2, Copy, X, Image as ImageIcon, Check, Crop, Plus, AlertCircle, FileText, BarChart3, PieChart, Filter, TrendingUp, Sparkles } from 'lucide-react'
+import { Upload, Search, Trash2, Copy, X, Image as ImageIcon, Check, Crop, Plus, AlertCircle, FileText, BarChart3, Filter, Sparkles } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useSettings } from '../context/SettingsContext'
 import api from '../services/api'

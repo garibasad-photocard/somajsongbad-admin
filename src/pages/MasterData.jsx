@@ -3,8 +3,8 @@ import { useSettings } from '../context/SettingsContext'
 import { useLanguage } from '../context/LanguageContext'
 import {
   Shield, Menu, Tag, BookOpen, Hash, Radio,
-  Layout, Clock, Calendar as CalendarIcon, Star, UserCheck,
-  Plus, Trash2, Pencil, Check, X, ChevronDown, ChevronRight, Search, GripVertical, AlertCircle, Link as LinkIcon, Eye, EyeOff, FileText, Printer
+  Layout, UserCheck,
+  Plus, Trash2, Pencil, Check, X, ChevronDown, ChevronRight, Search, GripVertical, AlertCircle, Eye, EyeOff, FileText, Printer
 } from 'lucide-react'
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
@@ -13,7 +13,7 @@ import { CSS } from '@dnd-kit/utilities'
 import api from '../services/api'
 import { bangladeshLocations } from '../utils/locationData';
 
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
+import { dateFnsLocalizer } from 'react-big-calendar'
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import startOfWeek from 'date-fns/startOfWeek'
@@ -306,6 +306,7 @@ function MenuAccessTab() {
   // Re-sync when context menuAccess loads from DB
   useEffect(() => {
     if (ctxMenuAccess) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAccess(ctxMenuAccess);
     }
   }, [ctxMenuAccess]);
@@ -993,6 +994,7 @@ function HomepageLayoutTab() {
   const [newTemplate, setNewTemplate] = useState('grid-3')
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLayout(homepageLayout || [])
   }, [homepageLayout])
 
@@ -1174,7 +1176,10 @@ function BreakingNewsTab() {
   const [editing, setEditing] = useState(null)
   const [editText, setEditText] = useState('')
 
-  useEffect(() => { setNews(breakingNews || []) }, [breakingNews])
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setNews(breakingNews || [])
+  }, [breakingNews])
 
   const handleAdd = (text) => {
     if (!text) return
@@ -1287,7 +1292,10 @@ function AdSettingsTab() {
   const [editIsActive, setEditIsActive] = useState(true)
   const [uploading, setUploading] = useState(false)
 
-  useEffect(() => { setAds(adSettings || []) }, [adSettings])
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAds(adSettings || [])
+  }, [adSettings])
 
   const handleAdd = () => {
     const updated = [...ads, { id: Date.now(), title: AD_SPOTS[0].id, type: 'image', code: '', imageUrl: '', link: '', width: '100%', height: 'auto', startDate: '', endDate: '', isActive: true }]
@@ -1710,20 +1718,9 @@ function CorrespondentsTab() {
   const [district, setDistrict] = useState('');
   const [upazila, setUpazila] = useState('');
 
-  useEffect(() => {
-    fetchCorrespondents();
-  }, []);
+  
 
-  const fetchCorrespondents = async () => {
-    try {
-      const res = await api.get('/correspondents');
-      setCorrespondents(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   const handleAdd = async (e) => {
     e.preventDefault();

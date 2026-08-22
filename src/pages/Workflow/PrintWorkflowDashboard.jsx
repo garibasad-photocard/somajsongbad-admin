@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../services/api'
-import {
-  BarChart2, Clock, CheckCircle, AlertTriangle, ChevronRight,
-  Printer, FileText, Users, Zap, TrendingUp, RefreshCw
+import { AlertTriangle, ChevronRight,
+  Printer, TrendingUp, RefreshCw
 } from 'lucide-react'
 
 // Stage configuration with colors and icons

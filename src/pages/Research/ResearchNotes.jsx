@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ResearchDashboard from './ResearchDashboard';
 import { FileEdit, Plus, Trash2, Loader2, Save, X } from 'lucide-react';
 import api from '../../services/api';
@@ -12,10 +12,6 @@ export default function ResearchNotes() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  useEffect(() => {
-    fetchNotes();
-  }, []);
-
   const fetchNotes = async () => {
     try {
       setIsLoading(true);
@@ -27,6 +23,10 @@ export default function ResearchNotes() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
 
   const handleSave = async (e) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ResearchDashboard from './ResearchDashboard';
 import { ShieldCheck, Send, Loader2, AlertTriangle, Info, CheckCircle2, XCircle, HelpCircle } from 'lucide-react';
 import api from '../../services/api';

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { Plus, Check, X, User, Clock, Tag, FileText, Lightbulb, ShieldAlert, ArrowRight, Video } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Plus, Check, X, User, Clock, Lightbulb, ArrowRight, Video } from 'lucide-react'
 import api from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import MediaFlowLogo from '../../components/common/MediaFlowLogo'

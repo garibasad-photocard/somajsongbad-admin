@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Sparkles, X, CheckCircle2, Loader2 } from 'lucide-react'
 
 export default function AIAssistantModal({ suggestions, onApply, onCancel, isGenerating }) {

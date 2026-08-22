@@ -8,6 +8,7 @@ import {
   verticalListSortingStrategy, useSortable, arrayMove
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import api from '../services/api'
 import { useSettings } from '../context/SettingsContext'
 import { useWorkflow } from '../context/WorkflowContext'
 import { useLanguage } from '../context/LanguageContext'
@@ -310,9 +311,15 @@ function DragCard({ item }) {
 // ── Main Page ──
 export default function NewsSort() {
   const { categories, positions, newsOrders, updateNewsOrders } = useSettings()
-  const { assignments } = useWorkflow()
   const { t } = useLanguage()
   const [selectedCat, setSelectedCat] = useState('প্রচ্ছদ')
+
+  const [assignments, setLocalAssignments] = useState([])
+  useEffect(() => {
+    api.get('/workflow?status=published&limit=1000').then(res => {
+      setLocalAssignments(res.data.map(a => ({ ...a, id: a._id })))
+    })
+  }, [])
 
   // Workflow থেকে publish হওয়া সব আর্টিকেল বের করে ক্যাটাগরি অনুযায়ী গ্রুপ করা
   const publishedByCategory = useMemo(() => {
@@ -362,7 +369,7 @@ export default function NewsSort() {
         // Apply visibility and pages
         map[cat] = map[cat].map(n => {
           if (savedMap[n.id]) {
-            return { ...n, visible: savedMap[n.id].visible, pages: savedMap[n.id].pages }
+            return { ...n, visible: savedMap[n.id].visible ?? true, pages: savedMap[n.id].pages || [] }
           }
           return n
         })
@@ -386,28 +393,31 @@ export default function NewsSort() {
   const [newsByCategory, setNewsByCategory] = useState(publishedByCategory)
 
   // assignments পরিবর্তনের সাথে sync রাখতে merge ফাংশন
-  const syncedNewsByCategory = useMemo(() => {
-    const merged = {}
-    Object.keys(publishedByCategory).forEach((cat) => {
-      const existing = newsByCategory[cat] || []
-      const fresh = publishedByCategory[cat]
-      const existingIds = new Set(existing.map((n) => n.id))
-      const newOnes = fresh.filter((n) => !existingIds.has(n.id))
-      const stillPublished = existing.filter((n) => fresh.some((f) => f.id === n.id))
-      merged[cat] = [...newOnes, ...stillPublished]
+  useEffect(() => {
+    setNewsByCategory(prev => {
+        const merged = {}
+        Object.keys(publishedByCategory).forEach((cat) => {
+          const existing = prev[cat] || []
+          const fresh = publishedByCategory[cat]
+          const existingIds = new Set(existing.map((n) => n.id))
+          const newOnes = fresh.filter((n) => !existingIds.has(n.id))
+          const stillPublished = existing.filter((n) => fresh.some((f) => f.id === n.id))
+          merged[cat] = [...newOnes, ...stillPublished]
+        })
+        return merged
     })
-    return merged
-  }, [publishedByCategory, newsByCategory])
+  }, [publishedByCategory])
 
   const [activeId, setActiveId] = useState(null)
   const [saved, setSaved] = useState(false)
+  const [hasChanges, setHasChanges] = useState(false)
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
 
-  const currentNews = syncedNewsByCategory[selectedCat] || []
+  const currentNews = newsByCategory[selectedCat] || []
   const activeItem = currentNews.find((n) => n.id === activeId)
 
   const handleDragStart = ({ active }) => setActiveId(active.id)
@@ -415,8 +425,9 @@ export default function NewsSort() {
   const handleDragEnd = ({ active, over }) => {
     setActiveId(null)
     if (!over || active.id === over.id) return
+    setHasChanges(true)
     setNewsByCategory((prev) => {
-      const items = syncedNewsByCategory[selectedCat]
+      const items = prev[selectedCat] || []
       const oldIdx = items.findIndex((n) => n.id === active.id)
       const newIdx = items.findIndex((n) => n.id === over.id)
       return { ...prev, [selectedCat]: arrayMove(items, oldIdx, newIdx) }
@@ -424,8 +435,9 @@ export default function NewsSort() {
   }
 
   const handleToggleVisible = (id) => {
+    setHasChanges(true)
     setNewsByCategory((prev) => {
-      const items = syncedNewsByCategory[selectedCat]
+      const items = prev[selectedCat] || []
       return {
         ...prev,
         [selectedCat]: items.map((n) =>
@@ -436,8 +448,9 @@ export default function NewsSort() {
   }
 
   const handlePageChange = (id, pages) => {
+    setHasChanges(true)
     setNewsByCategory((prev) => {
-      const items = syncedNewsByCategory[selectedCat]
+      const items = prev[selectedCat] || []
       return {
         ...prev,
         [selectedCat]: items.map((n) =>
@@ -448,13 +461,19 @@ export default function NewsSort() {
   }
 
   const handleSave = async () => {
-    // Extract only ID and visibility to keep the settings payload small
-    const ordersToSave = {}
-    Object.keys(syncedNewsByCategory).forEach(cat => {
-      ordersToSave[cat] = syncedNewsByCategory[cat].map(n => ({ id: n.id, visible: n.visible, pages: n.pages }))
+    if (!hasChanges) return
+    
+    const latestOrders = {}
+    Object.keys(newsByCategory).forEach(cat => {
+      latestOrders[cat] = newsByCategory[cat].map(n => ({ 
+        id: n.id, 
+        visible: n.visible !== undefined ? n.visible : true, 
+        pages: n.pages || [] 
+      }))
     })
-    const ok = await updateNewsOrders(ordersToSave)
+    const ok = await updateNewsOrders(latestOrders)
     if (ok !== false) {
+      setHasChanges(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 2500)
     }
@@ -474,10 +493,13 @@ export default function NewsSort() {
         </div>
         <button
           onClick={handleSave}
+          disabled={!hasChanges && !saved}
           className={`flex items-center gap-2 text-sm px-4 py-2 rounded-lg transition-all ${
             saved
               ? 'bg-green-100 text-green-700 border border-green-300'
-              : 'bg-blue-600 hover:bg-blue-700 text-white'
+              : hasChanges
+              ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer shadow-md'
+              : 'bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-500 cursor-not-allowed border border-gray-300 dark:border-slate-600'
           }`}
         >
           {saved ? <><CheckCircle size={14} /> {t.saved}</> : <><Save size={14} /> {t.save}</>}
@@ -487,7 +509,7 @@ export default function NewsSort() {
       {/* Category Tabs */}
       <div className="flex gap-2 flex-wrap">
         {categories.map((cat) => {
-          const items = syncedNewsByCategory[cat.name] || []
+          const items = newsByCategory[cat.name] || []
           const count = items.filter((n) => n.visible).length
           const total = items.length
           return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Search, Filter, Edit, CheckCircle, XCircle, Send, X } from 'lucide-react';
@@ -85,31 +85,13 @@ export default function NationalDesk() {
   
   const navigate = useNavigate();
 
+  
+
+  
+
   useEffect(() => {
     fetchArticles();
   }, [bureauFilter, divisionFilter, districtFilter, upazilaFilter, statusFilter]);
-
-  const fetchArticles = async () => {
-    setLoading(true);
-    try {
-      const params = { isBureau: 'true' };
-      if (bureauFilter) params.source = bureauFilter;
-      if (divisionFilter) params.division = divisionFilter;
-      if (districtFilter) params.district = districtFilter;
-      if (upazilaFilter) params.upazila = upazilaFilter;
-      if (statusFilter) params.editorialStatus = statusFilter;
-
-      const response = await axios.get('http://localhost:5001/api/articles', { params });
-      setArticles(response.data);
-      
-      const res = await axios.get('http://localhost:5001/api/correspondents', { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
-      setCorrespondents(res.data);
-    } catch (error) {
-      console.error('Error fetching national desk articles:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleUpdateStatus = async (id, newStatus) => {
     try {

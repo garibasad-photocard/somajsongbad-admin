@@ -7,8 +7,8 @@ import { useSettings } from '../../context/SettingsContext'
 import { useAuth } from '../../context/AuthContext'
 import {
   Bold, Italic, Underline, Strikethrough, List, ListOrdered,
-  Link2, Table, Image as ImageIcon, Save, ArrowLeft,
-  Upload, X, Printer, CheckSquare, Square, AlignLeft, Eye, Mic, UserCheck, Send, Layout, CheckCircle, XCircle, Newspaper, Video
+  Link2, Image as ImageIcon, Save, ArrowLeft,
+  Upload, X, Printer, CheckSquare, Square, AlignLeft, Eye, Mic, UserCheck, Send, Layout, CheckCircle, XCircle, Newspaper
 } from 'lucide-react'
 import api from '../../services/api'
 import ArticlePreviewModal from '../../components/Modals/ArticlePreviewModal'
@@ -292,6 +292,17 @@ function SelectField({ label, value, onChange, options, placeholder, required })
 }
 
 // ── Rich Text Editor (Body) ──
+const TB = ({ onClick, active, title, children }) => (
+  <button type="button" onClick={onClick} title={title}
+    className={`p-1.5 rounded-lg transition-colors ${
+      active
+        ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400'
+        : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800'
+    }`}>
+    {children}
+  </button>
+)
+
 function RichEditor({ content, onChange }) {
   const [cursorWords, setCursorWords] = useState({ before: 0, after: 0 })
   const editor = useEditor({
@@ -322,16 +333,7 @@ function RichEditor({ content, onChange }) {
   const totalWords = editor ? editor.getText().trim().split(/\s+/).filter(Boolean).length : 0
   const totalChars = editor ? editor.getText().length : 0
 
-  const TB = ({ onClick, active, title, children }) => (
-    <button type="button" onClick={onClick} title={title}
-      className={`p-1.5 rounded-lg transition-colors ${
-        active
-          ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400'
-          : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800'
-      }`}>
-      {children}
-    </button>
-  )
+
 
   return (
     <div className="border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden">

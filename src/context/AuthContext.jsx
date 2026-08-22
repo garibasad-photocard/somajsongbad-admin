@@ -4,6 +4,14 @@ import api from '../services/api'
 export const AuthContext = createContext()
 export const useAuth = () => useContext(AuthContext)
 
+const FALLBACK_USER = {
+  _id: 'fallback_user',
+  name: 'Guest User',
+  email: '',
+  role: 'reporter',
+  edition: 'online'
+}
+
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
@@ -33,7 +41,7 @@ export function AuthProvider({ children }) {
           const validData = res.data
           setUser({ ...validData, token })
           localStorage.setItem('cms_user', JSON.stringify(validData))
-        } catch (err) {
+        } catch (_err) {
           // token invalid বা expire হয়ে গেছে — session মুছে দাও
           console.warn('Token invalid or expired, clearing session')
           localStorage.removeItem('cms_token')

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { io } from 'socket.io-client';
 import { AuthContext } from '../../context/AuthContext';
 import { X, Bell } from 'lucide-react';
@@ -8,6 +8,10 @@ let socket = null;
 export default function NotificationToast() {
   const { user } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
+
+  const removeNotification = (id) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -40,9 +44,7 @@ export default function NotificationToast() {
     };
   }, [user]);
 
-  const removeNotification = (id) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
-  };
+  
 
   if (notifications.length === 0) return null;
 

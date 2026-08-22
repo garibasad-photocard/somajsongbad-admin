@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
-import { Newspaper, Clock, User, Eye, CheckCircle, RefreshCw, Send, AlertTriangle, Edit2, XCircle, Edit3 } from 'lucide-react'
+import { Newspaper, User, Eye, CheckCircle, RefreshCw, Send, Edit2, XCircle, Edit3 } from 'lucide-react'
 import OnlineArticlePreviewModal from '../../components/Modals/OnlineArticlePreviewModal'
 import OnlineQuickEditModal from '../../components/Modals/OnlineQuickEditModal'
 

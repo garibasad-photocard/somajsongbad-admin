@@ -466,12 +466,13 @@ export function SettingsProvider({ children }) {
   const updateNewsOrders = async (orders) => {
     setNewsOrders(orders)
     const result = await save('news_orders', orders)
-    // Trigger website cache revalidation so homepage reflects new order immediately
+    // Trigger website cache revalidation (fire and forget to not slow down saving)
     try {
-      await fetch('http://localhost:3000/api/revalidate', { method: 'POST' })
-    } catch (e) {
-      // Ignore if website is not running
-    }
+      fetch('http://localhost:3000/api/revalidate', { method: 'POST' }).catch(() => {})
+      fetch('http://localhost:3050/api/revalidate', { method: 'POST' }).catch(() => {})
+      fetch('https://www.somajsongbad.com/api/revalidate', { method: 'POST' }).catch(() => {})
+      fetch('https://somajsongbad.com/api/revalidate', { method: 'POST' }).catch(() => {})
+    } catch(e) {}
     return result
   }
 

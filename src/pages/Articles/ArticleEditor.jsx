@@ -10,12 +10,11 @@ import { useLanguage } from '../../context/LanguageContext'
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, horizontalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { mockArticles } from '../../data/articles'
 import {
   Bold, Italic, List, ListOrdered, Heading2,
   Quote, Link2, Save, Eye, ArrowLeft, Upload,
   Plus, Trash2, Highlighter, Code, Newspaper, FileText,
-  X, Search, GripVertical, Image as ImageIcon, FolderOpen, Mic, History, MessageSquare, LayoutTemplate, Sparkles, Printer, Video, CheckCircle, Calendar, AlertCircle
+  X, Search, GripVertical, Image as ImageIcon, FolderOpen, Mic, MessageSquare, LayoutTemplate, Sparkles, Printer, Video, CheckCircle, Calendar, AlertCircle
 } from 'lucide-react'
 import api from '../../services/api'
 import SearchableSelect from '../../components/SearchableSelect'
@@ -1550,10 +1549,10 @@ export default function ArticleEditor() {
     }
   }
 
-  const unlockAndNavigate = async (path, articleId = currentId) => {
-    if (articleId) {
+  const unlockAndNavigate = async (path, id = currentId) => {
+    if (id) {
       try {
-        await api.post(`/articles/${articleId}/unlock`);
+        await api.post(`/articles/${id}/unlock`);
       } catch (err) {
         console.error('Explicit unlock failed', err);
       }
@@ -1683,8 +1682,13 @@ export default function ArticleEditor() {
         }
       }
 
-      if (assignmentId && status === 'published') {
-        updateStatus(assignmentId, 'submitted', 'আর্টিকেল লেখা সম্পন্ন।', 'Reporter')
+      if (status === 'published') {
+        try {
+          fetch('http://localhost:3000/api/revalidate', { method: 'POST' }).catch(() => {})
+          fetch('http://localhost:3050/api/revalidate', { method: 'POST' }).catch(() => {})
+          fetch('https://www.somajsongbad.com/api/revalidate', { method: 'POST' }).catch(() => {})
+          fetch('https://somajsongbad.com/api/revalidate', { method: 'POST' }).catch(() => {})
+        } catch(e) {}
       }
 
       if (status === 'draft') {
@@ -1707,7 +1711,7 @@ export default function ArticleEditor() {
       }
 
       if (!skipNavigation) {
-        await unlockAndNavigate(assignmentId ? `/workflow/${assignmentId}` : '/articles', articleId)
+        await unlockAndNavigate(assignmentId ? `/workflow/${assignmentId}` : '/articles', id)
       }
       return true
     } catch (err) {
@@ -1946,24 +1950,29 @@ export default function ArticleEditor() {
                 className="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md">
                 <Save size={16} /> {saving ? 'সেভ হচ্ছে...' : 'কারেকশন সেভ করুন'}
               </button>
-              {user?.role === 'chief_reporter' && (
+              {['chief_reporter', 'news_manager', 'editor', 'chief_editor', 'executive_editor', 'managing_editor', 'desk_editor', 'sub_editor'].includes(user?.role) && (
                 <>
                   <button onClick={async () => {
                       setSaving(true);
                       await handleSave('draft');
                       try {
+                        const isChiefReporter = user?.role === 'chief_reporter';
+                        const targetStage = isChiefReporter ? 'news_management_editing' : 'sent_to_proof';
+                        const routingChoice = isChiefReporter ? 'news_management' : 'proof';
+                        const editorNote = isChiefReporter ? 'Approved and advanced to News Management.' : 'Approved and advanced to Proof.';
+
                         if (currentAssignment?.edition === 'online') {
-                          await api.put(`/workflow/${assignmentId}/online-track`, { workflowStage: 'news_management_editing', routingChoice: 'news_management', editorNote: 'Approved and advanced to News Management.', status: 'review' });
+                          await api.put(`/workflow/${assignmentId}/online-track`, { workflowStage: targetStage, routingChoice, editorNote, status: 'review' });
                         } else {
-                          await api.post(`/print-workflow/${assignmentId}/advance`, { targetStage: 'sent_to_news_management', note: 'Approved and advanced to News Management.' });
+                          await api.post(`/print-workflow/${assignmentId}/advance`, { targetStage: isChiefReporter ? 'sent_to_news_management' : 'sent_to_proof', note: editorNote });
                         }
-                        alert('নিউজ ম্যানেজমেন্ট-এ পাঠানো হয়েছে!');
+                        alert(isChiefReporter ? 'নিউজ ম্যানেজমেন্ট-এ পাঠানো হয়েছে!' : 'প্রুফে পাঠানো হয়েছে!');
                         await unlockAndNavigate('/articles');
                       } catch (err) { alert('Error: ' + (err.response?.data?.message || err.message)); }
                       setSaving(false);
                   }} disabled={saving}
                     className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md">
-                    <CheckCircle size={16} /> নিউজ ম্যানেজমেন্ট-এ পাঠান
+                    <CheckCircle size={16} /> {user?.role === 'chief_reporter' ? 'নিউজ ম্যানেজমেন্ট-এ পাঠান' : 'প্রুফে পাঠান'}
                   </button>
                   <button onClick={async () => {
                       setSaving(true);

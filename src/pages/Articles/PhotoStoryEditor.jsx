@@ -15,7 +15,7 @@ import {
   Bold, Italic, List, ListOrdered, Heading2,
   Quote, Link2, Save, Eye, ArrowLeft, Upload,
   Plus, Trash2, Highlighter, Code, Newspaper, FileText,
-  X, Search, GripVertical, Image as ImageIcon, FolderOpen, Mic, History, MessageSquare, LayoutTemplate, Sparkles, Printer, Video
+  X, Search, GripVertical, Image as ImageIcon, FolderOpen, Mic, MessageSquare, LayoutTemplate, Sparkles, Printer, Video
 } from 'lucide-react'
 import api from '../../services/api'
 import SearchableSelect from '../../components/SearchableSelect'
@@ -1571,10 +1571,10 @@ export default function PhotoStoryEditor() {
     }
   }
 
-  const unlockAndNavigate = async (path, articleId = currentId) => {
-    if (articleId) {
+  const unlockAndNavigate = async (path, id = currentId) => {
+    if (id) {
       try {
-        await api.post(`/articles/${articleId}/unlock`);
+        await api.post(`/articles/${id}/unlock`);
       } catch (err) {
         console.error('Explicit unlock failed', err);
       }
@@ -1662,7 +1662,7 @@ export default function PhotoStoryEditor() {
         }
       }
 
-      await unlockAndNavigate(assignmentId ? `/workflow/${assignmentId}` : '/articles', articleId)
+      await unlockAndNavigate(assignmentId ? `/workflow/${assignmentId}` : '/articles', id)
     } catch (err) {
       console.error(err)
       alert('আর্টিকেল সেভ করতে সমস্যা হয়েছে! দয়া করে ইন্টারনেট কানেকশন চেক করুন বা আবার চেষ্টা করুন।')

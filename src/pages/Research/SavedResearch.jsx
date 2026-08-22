@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ResearchDashboard from './ResearchDashboard';
 import { Bookmark, ExternalLink, Trash2, Loader2, Link as LinkIcon, FileText, Bot } from 'lucide-react';
 import api from '../../services/api';
@@ -8,10 +8,6 @@ import { bn } from 'date-fns/locale';
 export default function SavedResearch() {
   const [savedItems, setSavedItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetchSavedItems();
-  }, []);
 
   const fetchSavedItems = async () => {
     try {
@@ -24,6 +20,10 @@ export default function SavedResearch() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchSavedItems();
+  }, []);
 
   const handleDelete = async (id) => {
     if (window.confirm('সংরক্ষিত আইটেমটি মুছে ফেলতে চান?')) {

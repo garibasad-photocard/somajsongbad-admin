@@ -40,6 +40,7 @@ import NewsTipPipeline from './pages/Workflow/NewsTipPipeline'
 import MediaQC from './pages/MediaQC'
 import LiveNews from './pages/LiveNews'
 import EditorialCalendar from './pages/Workflow/EditorialCalendar'
+import DepartmentQueue from './pages/Workflow/DepartmentQueue'
 import MultimediaVideoUpload from './pages/Workflow/VideoUpload'
 import HRManagement from './pages/HRManagement'
 import MediaFlowLogo from './components/common/MediaFlowLogo'
@@ -254,6 +255,9 @@ function App() {
                   }/>
                   <Route path="/workflow/calendar" element={
                     <PrivateRoute><Layout><EditorialCalendar /></Layout></PrivateRoute>
+                  }/>
+                  <Route path="/workflow/department-queue" element={
+                    <PrivateRoute><Layout><DepartmentQueue /></Layout></PrivateRoute>
                   }/>
                   <Route path="/workflow/:id" element={
                     <PrivateRoute><Layout><AssignmentDetail /></Layout></PrivateRoute>

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useWorkflow } from '../../context/WorkflowContext';
-import { Printer, Calendar, LayoutList, FileText, CheckCircle, Clock } from 'lucide-react';
+import { Printer, Calendar, LayoutList, CheckCircle, Clock } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 export default function PrintRundown() {

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ResearchDashboard from './ResearchDashboard';
-import { Target, Activity, ExternalLink, Loader2, RefreshCw, Eye } from 'lucide-react';
+import { Target, Activity, Loader2, RefreshCw, Eye } from 'lucide-react';
 import api from '../../services/api';
 
 export default function CompetitorMonitor() {

@@ -3,9 +3,8 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useSettings } from '../../context/SettingsContext'
 import { useAuth } from '../../context/AuthContext'
 import { useLanguage } from '../../context/LanguageContext'
-import { Video, ArrowLeft, Upload, Save, X, Image as ImageIcon, Search } from 'lucide-react'
+import { Video, ArrowLeft, Upload, X } from 'lucide-react'
 import api from '../../services/api'
-import SearchableSelect from '../../components/SearchableSelect'
 
 export default function VideoUpload() {
   const { id } = useParams()

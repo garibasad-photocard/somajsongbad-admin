@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Calendar, CheckCircle, Check, Clock, XCircle, List, UserPlus, MapPin, TrendingUp, Edit2, Trash2, Search, Filter, Settings, Plus, Save, Star } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, BarChart, Bar } from 'recharts'
 import api from '../services/api'
@@ -28,10 +28,6 @@ function MyDashboardTab() {
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchStats()
-  }, [])
-
   const fetchStats = async () => {
     try {
       const res = await api.get('/hr/my-dashboard-stats')
@@ -42,6 +38,10 @@ function MyDashboardTab() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchStats()
+  }, [])
 
   if (loading) return <div className="flex h-64 items-center justify-center text-gray-500">ডাটা লোড হচ্ছে...</div>
   if (!stats) return <div className="flex h-64 items-center justify-center text-gray-500">ডেটা পাওয়া যায়নি।</div>
@@ -216,10 +216,6 @@ function MyLeavesTab() {
   
   const leaveTypes = ['ক্যাজুয়াল লিভ', 'সিক লিভ', 'ম্যাটার্নিটি লিভ', 'বাৎসরিক ছুটি']
 
-  useEffect(() => {
-    fetchData()
-  }, [])
-
   const fetchData = async () => {
     try {
       const [balRes, reqRes, usersRes] = await Promise.all([
@@ -236,6 +232,10 @@ function MyLeavesTab() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   const handleApply = async (e) => {
     e.preventDefault()
@@ -351,10 +351,6 @@ function LeaveApprovalsTab() {
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('All')
 
-  useEffect(() => {
-    fetchRequests()
-  }, [])
-
   const fetchRequests = async () => {
     try {
       const res = await api.get('/leaves/requests')
@@ -365,6 +361,10 @@ function LeaveApprovalsTab() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchRequests()
+  }, [])
 
   const updateStatus = async (id, status) => {
     try {
@@ -573,10 +573,6 @@ function AttendanceReportTab() {
   const [dateFilter, setDateFilter] = useState(new Date().toLocaleDateString('en-CA')) // Today
   const [searchQuery, setSearchQuery] = useState('')
 
-  useEffect(() => {
-    fetchAttendances(dateFilter)
-  }, [dateFilter])
-
   const fetchAttendances = async (date) => {
     setLoading(true)
     try {
@@ -588,6 +584,10 @@ function AttendanceReportTab() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchAttendances(dateFilter)
+  }, [dateFilter])
 
   // Calculate KPIs
   const totalCheckIns = attendances.length
@@ -769,10 +769,6 @@ function TopManagementTab() {
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchStats()
-  }, [])
-
   const fetchStats = async () => {
     try {
       const res = await api.get('/hr/dashboard-stats')
@@ -783,6 +779,10 @@ function TopManagementTab() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchStats()
+  }, [])
 
   if (loading) return <div className="p-5 text-gray-500">লোড হচ্ছে...</div>
   if (!stats) return <div className="p-5 text-red-500">ডেটা পাওয়া যায়নি।</div>
@@ -1013,10 +1013,6 @@ function MasterDataTab() {
   const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   const BN_DAYS = { 'Sunday': 'রবিবার', 'Monday': 'সোমবার', 'Tuesday': 'মঙ্গলবার', 'Wednesday': 'বুধবার', 'Thursday': 'বৃহস্পতিবার', 'Friday': 'শুক্রবার', 'Saturday': 'শনিবার' }
 
-  useEffect(() => {
-    fetchSettings()
-  }, [])
-
   const fetchSettings = async () => {
     try {
       const res = await api.get('/hr/settings')
@@ -1031,6 +1027,10 @@ function MasterDataTab() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchSettings()
+  }, [])
 
   const handleSave = async () => {
     setSaving(true)

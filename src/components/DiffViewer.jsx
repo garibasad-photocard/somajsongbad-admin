@@ -1,4 +1,3 @@
-import React from 'react'
 import * as diff from 'diff'
 
 export default function DiffViewer({ oldText = '', newText = '' }) {

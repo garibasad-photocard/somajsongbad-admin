@@ -23,15 +23,15 @@ export default function DeadlineTracker() {
       if (hoursDiff <= 0) {
         urgency = 'overdue'
         const overdueHours = Math.abs(Math.round(hoursDiff))
-        timeText = overdueHours === 0 ? '??????? ??? ?????!' : `${overdueHours} ????? ??? ??? ????!`
+        timeText = overdueHours === 0 ? 'ডেডলাইন এইমাত্র পার হয়েছে!' : `ডেডলাইন ${overdueHours} ঘণ্টা আগে পার হয়ে গেছে!`
       } else if (hoursDiff <= 1) {
         urgency = 'urgent'
         const mins = Math.round(hoursDiff * 60)
-        timeText = `?? ????? ${mins} ????? ????!`
+        timeText = `আর মাত্র ${mins} মিনিট বাকি!`
       } else {
         urgency = 'normal'
         const hrs = Math.round(hoursDiff)
-        timeText = `${hrs} ????? ???? ???`
+        timeText = `${hrs} ঘণ্টা বাকি আছে`
       }
 
       return { ...a, urgency, timeText, hoursDiff }
@@ -55,10 +55,10 @@ export default function DeadlineTracker() {
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 mb-2 flex items-center gap-3">
             <Activity className="text-blue-600 dark:text-blue-400" size={32} />
-            ??????? ??????? ?????????
+            ডেডলাইন ও নোটিফিকেশন ট্র্যাকার
           </h1>
           <p className="text-sm md:text-base text-gray-600 dark:text-slate-400 max-w-2xl font-medium">
-            ???? ??????? ??????????? ??????-????? ????? ???????, ????????? ??? ???????????? ???????????? ??? ??? ??????
+            রিয়েল-টাইম অ্যাসাইনমেন্ট ডেডলাইন অ্যালার্ট এবং নিউজরুম নোটিফিকেশন ড্যাশবোর্ড। ডেডলাইন পার হয়ে যাওয়া বা অল্প সময় বাকি থাকা অ্যাসাইনমেন্টগুলোর ওপর নজর রাখুন।
           </p>
         </div>
       </div>
@@ -77,8 +77,8 @@ export default function DeadlineTracker() {
               {overdueCount}
             </span>
           </div>
-          <h3 className={`font-bold text-lg mb-1 ${filter === 'overdue' || (filter === 'all' && overdueCount > 0) ? 'text-white' : 'text-gray-900 dark:text-white'}`}>??????? ?????</h3>
-          <p className={`text-sm font-medium ${filter === 'overdue' || (filter === 'all' && overdueCount > 0) ? 'text-rose-100' : 'text-gray-500 dark:text-slate-400'}`}>?????????? ??? ????? ???????</p>
+          <h3 className={`font-bold text-lg mb-1 ${filter === 'overdue' || (filter === 'all' && overdueCount > 0) ? 'text-white' : 'text-gray-900 dark:text-white'}`}>মিসড ডেডলাইন</h3>
+          <p className={`text-sm font-medium ${filter === 'overdue' || (filter === 'all' && overdueCount > 0) ? 'text-rose-100' : 'text-gray-500 dark:text-slate-400'}`}>ডেডলাইন পার হয়ে গেছে এমন কাজ</p>
         </button>
 
         {/* Urgent */}
@@ -92,8 +92,8 @@ export default function DeadlineTracker() {
               {urgentCount}
             </span>
           </div>
-          <h3 className={`font-bold text-lg mb-1 ${filter === 'urgent' ? 'text-white' : 'text-gray-900 dark:text-white'}`}>???? ??? ????</h3>
-          <p className={`text-sm font-medium ${filter === 'urgent' ? 'text-amber-100' : 'text-gray-500 dark:text-slate-400'}`}>? ?????? ?? ??? ???</p>
+          <h3 className={`font-bold text-lg mb-1 ${filter === 'urgent' ? 'text-white' : 'text-gray-900 dark:text-white'}`}>জরুরি (১ ঘণ্টা)</h3>
+          <p className={`text-sm font-medium ${filter === 'urgent' ? 'text-amber-100' : 'text-gray-500 dark:text-slate-400'}`}>১ ঘণ্টার মধ্যে জমা দিতে হবে</p>
         </button>
 
         {/* Normal */}
@@ -106,8 +106,8 @@ export default function DeadlineTracker() {
               {normalCount}
             </span>
           </div>
-          <h3 className={`font-bold text-lg mb-1 ${filter === 'normal' ? 'text-white' : 'text-gray-900 dark:text-white'}`}>???????? ???</h3>
-          <p className={`text-sm font-medium ${filter === 'normal' ? 'text-emerald-100' : 'text-gray-500 dark:text-slate-400'}`}>????? ???? ??? ???</p>
+          <h3 className={`font-bold text-lg mb-1 ${filter === 'normal' ? 'text-white' : 'text-gray-900 dark:text-white'}`}>সময়মতো চলছে</h3>
+          <p className={`text-sm font-medium ${filter === 'normal' ? 'text-emerald-100' : 'text-gray-500 dark:text-slate-400'}`}>পর্যাপ্ত সময় বাকি আছে</p>
         </button>
 
         {/* Notifications Summary */}
@@ -120,8 +120,8 @@ export default function DeadlineTracker() {
               {notifications.length}
             </span>
           </div>
-          <h3 className="font-bold text-lg mb-1 text-gray-900 dark:text-white">????????? ? ?????</h3>
-          <p className="text-sm font-medium text-gray-500 dark:text-slate-400">????????? ??????????</p>
+          <h3 className="font-bold text-lg mb-1 text-gray-900 dark:text-white">নোটিফিকেশন ও আলার্ট</h3>
+          <p className="text-sm font-medium text-gray-500 dark:text-slate-400">সিস্টেম নোটিফিকেশন</p>
         </div>
 
       </div>
@@ -134,18 +134,18 @@ export default function DeadlineTracker() {
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
             <h2 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3">
               <Clock className="text-indigo-500" size={28} />
-              ????????????? ????????
+              ডেডলাইন টাইমলাইন
             </h2>
             <div className="bg-gray-100 dark:bg-slate-800 rounded-full p-1 flex">
-               <button onClick={() => setFilter('all')} className={`px-5 py-1.5 rounded-full text-sm font-bold transition-all ${filter==='all'?'bg-white dark:bg-slate-700 shadow text-gray-900 dark:text-white':'text-gray-500 hover:text-gray-700 dark:text-slate-400'}`}>?? ?????</button>
+               <button onClick={() => setFilter('all')} className={`px-5 py-1.5 rounded-full text-sm font-bold transition-all ${filter==='all'?'bg-white dark:bg-slate-700 shadow text-gray-900 dark:text-white':'text-gray-500 hover:text-gray-700 dark:text-slate-400'}`}>সব দেখুন</button>
             </div>
           </div>
 
           {filteredAssignments.length === 0 ? (
             <div className="py-20 text-center flex flex-col items-center justify-center opacity-70">
               <CheckCircle2 size={64} className="text-gray-300 dark:text-slate-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-500 dark:text-slate-400">?? ???????!</h3>
-              <p className="text-gray-400">?? ??????????? ???? ??????? ????? ????</p>
+              <h3 className="text-xl font-bold text-gray-500 dark:text-slate-400">দারুণ! সব ঠিকঠাক!</h3>
+              <p className="text-gray-400">এই মুহূর্তে কোনো পেন্ডিং ডেডলাইন নেই</p>
             </div>
           ) : (
             <div className="relative border-l-2 border-gray-200 dark:border-slate-700 ml-4 md:ml-6 space-y-8 pb-4">
@@ -167,7 +167,7 @@ export default function DeadlineTracker() {
                               {a.timeText}
                             </span>
                             <span className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[11px] uppercase tracking-wider font-bold rounded-lg border border-slate-200 dark:border-slate-600">
-                              {a.categories?.[0] || '???????'}
+                              {a.categories?.[0] || 'সাধারণ'}
                             </span>
                           </div>
                           <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -186,8 +186,8 @@ export default function DeadlineTracker() {
                             <User size={16} />
                           </div>
                           <div className="truncate">
-                            <span className="block text-[10px] text-gray-400 uppercase tracking-wide">?????????</span>
-                            <span className="truncate block font-bold text-gray-800 dark:text-slate-200">{a.assignedTo?.name || '???????? ??? ????'}</span>
+                            <span className="block text-[10px] text-gray-400 uppercase tracking-wide">রিপোর্টার</span>
+                            <span className="truncate block font-bold text-gray-800 dark:text-slate-200">{a.assignedTo?.name || 'নির্ধারিত হয়নি'}</span>
                           </div>
                         </div>
                         <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-slate-400 font-medium bg-gray-50 dark:bg-slate-800/50 p-2.5 rounded-xl border border-gray-100 dark:border-slate-700/50">
@@ -195,7 +195,7 @@ export default function DeadlineTracker() {
                             <Calendar size={16} />
                           </div>
                           <div>
-                            <span className="block text-[10px] text-gray-400 uppercase tracking-wide">???????</span>
+                            <span className="block text-[10px] text-gray-400 uppercase tracking-wide">ডেডলাইন</span>
                             <span className="font-bold text-gray-800 dark:text-slate-200">{new Date(a.deadline).toLocaleString('bn-BD', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' })}</span>
                           </div>
                         </div>
@@ -214,11 +214,11 @@ export default function DeadlineTracker() {
             <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center justify-between mb-6 border-b border-gray-200/50 dark:border-slate-700/50 pb-4">
               <span className="flex items-center gap-2">
                 <Bell className="text-amber-500" size={24} />
-                ???? ?????
+                লাইভ আলার্ট
               </span>
               {notifications.length > 0 && (
                 <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs rounded-full font-bold shadow-sm animate-pulse">
-                  {notifications.length} ????
+                  {notifications.length} টি নতুন
                 </span>
               )}
             </h2>
@@ -227,7 +227,7 @@ export default function DeadlineTracker() {
               {notifications.length === 0 ? (
                 <div className="text-center text-gray-400 py-10 opacity-70">
                   <Info size={48} className="mx-auto mb-3 opacity-30 text-blue-400" />
-                  <p className="font-medium text-slate-500">???? ???? ?????????? ???</p>
+                  <p className="font-medium text-slate-500">কোনো নতুন নোটিফিকেশন নেই</p>
                 </div>
               ) : (
                 notifications.map((notif, idx) => (

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { X, Download, LayoutTemplate, Quote, Settings } from 'lucide-react'
-import { useSettings } from '../../context/SettingsContext'
+import { useState, useEffect, useRef } from 'react'
+import { X, Download, LayoutTemplate, Quote } from 'lucide-react'
 
 export default function SocialCardGenerator({ isOpen, onClose, coverImage, title, blocks }) {
   const canvasRef = useRef(null)
@@ -33,157 +32,15 @@ export default function SocialCardGenerator({ isOpen, onClose, coverImage, title
     }
   }, [isOpen, blocks])
 
+  
+
+  
+
   useEffect(() => {
     if (isOpen) {
       drawCanvas()
     }
   }, [isOpen, cardStyle, coverImage, title, quoteText, showAd, adImage, adPosition, siteUrl, showCommentsText, imageOffsetX, imageOffsetY])
-
-  const drawCanvas = async () => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    setIsDrawing(true)
-
-    // Canvas size for Social Media (e.g., 1080x1350 for 4:5 portrait)
-    const width = 1080
-    const height = 1350
-    canvas.width = width
-    canvas.height = height
-
-    // Clear canvas
-    ctx.clearRect(0, 0, width, height)
-
-    // Fill background black just in case
-    ctx.fillStyle = '#000000'
-    ctx.fillRect(0, 0, width, height)
-
-    const adHeight = 180;
-    const isBottomAd = showAd && adPosition === 'bottom' && adImage;
-    const isTopAd = showAd && adPosition === 'top' && adImage;
-    
-    const bottomMargin = isBottomAd ? adHeight + 60 : 60;
-    const topMargin = isTopAd ? adHeight + 40 : 40;
-
-    try {
-      // 1. Draw Background Image
-      if (coverImage) {
-        const img = await loadImage(coverImage)
-        const imgRatio = img.width / img.height
-        const canvasRatio = width / height
-        let drawWidth, drawHeight, offsetX, offsetY
-        if (imgRatio > canvasRatio) {
-          drawHeight = height
-          drawWidth = img.width * (height / img.height)
-          offsetX = (width - drawWidth) / 2
-          offsetY = 0
-        } else {
-          drawWidth = width
-          drawHeight = img.height * (width / img.width)
-          offsetX = 0
-          offsetY = (height - drawHeight) / 2
-        }
-        ctx.drawImage(img, offsetX + imageOffsetX, offsetY + imageOffsetY, drawWidth, drawHeight)
-      } else {
-        // Draw default gradient if no cover image
-        const bgGradient = ctx.createLinearGradient(0, 0, width, height)
-        bgGradient.addColorStop(0, '#1e293b') // slate-800
-        bgGradient.addColorStop(1, '#0f172a') // slate-900
-        ctx.fillStyle = bgGradient
-        ctx.fillRect(0, 0, width, height)
-      }
-
-      // 2. Draw Styles
-      if (cardStyle === 'headline') {
-        // Draw Dark Gradient at bottom
-        const gradientStart = isBottomAd ? height * 0.25 : height * 0.4
-        const gradient = ctx.createLinearGradient(0, gradientStart, 0, height)
-        gradient.addColorStop(0, 'rgba(0,0,0,0)')
-        gradient.addColorStop(0.5, 'rgba(0,0,0,0.8)')
-        gradient.addColorStop(1, 'rgba(0,0,0,1)')
-        ctx.fillStyle = gradient
-        ctx.fillRect(0, gradientStart, width, height - gradientStart)
-
-        // Draw Headline Text
-        ctx.fillStyle = '#FFFFFF'
-        ctx.font = 'bold 65px "Hind Siliguri", "Noto Sans Bengali", sans-serif'
-        ctx.textAlign = 'center'
-        const headlineY = isBottomAd ? height * 0.75 - 60 : height * 0.75
-        wrapText(ctx, title || 'শিরোনাম এখানে বসবে', width / 2, headlineY, width - 260, 90)
-
-        // Draw Date & Website
-        ctx.fillStyle = '#E5E7EB'
-        ctx.font = 'bold 28px "Hind Siliguri", sans-serif'
-        ctx.textAlign = 'left'
-        const today = new Date().toISOString().split('T')[0]
-        ctx.fillText(today, 60, height - bottomMargin)
-        
-        ctx.textAlign = 'right'
-        ctx.fillText(siteUrl, width - 60, height - bottomMargin)
-
-      } else if (cardStyle === 'quote') {
-        // Draw Quote Style (Rounded box with transparent black)
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.65)'
-        roundRect(ctx, 60, height - 450, width - 120, 320, 30)
-
-        // Draw Quote Mark (Yellow/Orange)
-        ctx.fillStyle = '#F59E0B' // Amber-500
-        ctx.font = 'bold 200px serif'
-        ctx.textAlign = 'left'
-        ctx.fillText('“', 80, height - 340)
-
-        // Draw Quote Text
-        ctx.fillStyle = '#FFFFFF'
-        ctx.font = 'bold 45px "Hind Siliguri", "Noto Sans Bengali", sans-serif'
-        ctx.textAlign = 'center'
-        wrapText(ctx, quoteText, width / 2, height - (bottomMargin + 280), width - 200, 65)
-
-        // Draw Website
-        ctx.fillStyle = '#E5E7EB'
-        ctx.font = 'bold 28px sans-serif'
-        ctx.textAlign = 'right'
-        ctx.fillText(siteUrl, width - 80, height - (bottomMargin + 100))
-      }
-
-      // 3. Draw Logo Image (Top Right)
-      try {
-        // Try loading white-logo.png for better visibility on dark backgrounds, or fallback to logo.png
-        const logoImg = await loadImage('/logo.png').catch(() => null)
-        if (logoImg) {
-          // Calculate aspect ratio (reduce size by 25%)
-          const targetHeight = 45
-          const targetWidth = (logoImg.width / logoImg.height) * targetHeight
-          ctx.drawImage(logoImg, width - 60 - targetWidth, topMargin + 20, targetWidth, targetHeight)
-        }
-      } catch (err) {
-        console.warn('Logo could not be loaded', err)
-      }
-      
-      // 4. Draw Comments Text
-      if (showCommentsText) {
-        ctx.fillStyle = '#FBBF24' // Yellow-400
-        ctx.font = 'bold 28px "Hind Siliguri", "Noto Sans Bengali", sans-serif'
-        ctx.textAlign = 'center'
-        // Draw exactly on the same Y line as Date and Website, but centered
-        ctx.fillText('বিস্তারিত কমেন্টে ▾', width / 2, height - bottomMargin)
-      }
-      
-      // 5. Draw Ad Strip
-      if (showAd && adImage) {
-        const adImg = await loadImage(adImage)
-        if (adPosition === 'bottom') {
-          ctx.drawImage(adImg, 0, height - adHeight, width, adHeight)
-        } else {
-          ctx.drawImage(adImg, 0, 0, width, adHeight)
-        }
-      }
-
-    } catch (err) {
-      console.error('Error drawing canvas', err)
-    } finally {
-      setIsDrawing(false)
-    }
-  }
 
   // --- Helpers ---
   const loadImage = (src) => {

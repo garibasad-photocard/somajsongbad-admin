@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useSettings } from '../../context/SettingsContext'
 import api from '../../services/api'
-import { Layout, CheckCircle, Clock, User, Eye, RefreshCw, ChevronRight, Printer, FileText } from 'lucide-react'
+import { Layout, Clock, User, Eye, RefreshCw, Printer, FileText } from 'lucide-react'
 
 function formatTime(iso) {
   if (!iso) return ''

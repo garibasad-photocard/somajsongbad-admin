@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Check, X, FileText, ExternalLink, Image as ImageIcon, Trash2, AlertCircle, BarChart3 } from 'lucide-react'
+import { Check, X, FileText, ExternalLink, Trash2, AlertCircle, BarChart3 } from 'lucide-react'
 import api from '../services/api'
 
 export default function MediaQC() {

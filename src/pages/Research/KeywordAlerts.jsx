@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ResearchDashboard from './ResearchDashboard';
 import { Bell, Plus, Trash2, Loader2, AlertTriangle } from 'lucide-react';
 import api from '../../services/api';
@@ -9,10 +9,6 @@ export default function KeywordAlerts() {
   const [alerts, setAlerts] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetchAlerts();
-  }, []);
 
   const fetchAlerts = async () => {
     try {
@@ -25,6 +21,10 @@ export default function KeywordAlerts() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchAlerts();
+  }, []);
 
   const handleAdd = async (e) => {
     e.preventDefault();

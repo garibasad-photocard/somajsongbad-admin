@@ -15,6 +15,15 @@ const DEMO_ACCOUNTS = [
   { role: 'reporter', label: 'Reporter', email: 'reporter@news.com', password: 'reporter123', userData: { name: 'Reporter', email: 'reporter@news.com', role: 'reporter' }, token: 'dummy_token_reporter', icon: Pencil },
 ]
 
+const IconBtn = ({ icon, label }) => (
+  <div className="flex flex-col items-center text-center gap-2 group cursor-pointer">
+    <div className="w-10 h-10 rounded-full border border-[#ae8a4b] text-[#ae8a4b] flex items-center justify-center group-hover:bg-[#ae8a4b] group-hover:text-white transition-colors duration-300">
+      {icon}
+    </div>
+    <span className="text-[10px] text-gray-400 leading-tight group-hover:text-gray-200 transition-colors">{label}</span>
+  </div>
+)
+
 export default function Login() {
   const { login, user } = useContext(AuthContext)
   const navigate = useNavigate()
@@ -57,14 +66,6 @@ export default function Login() {
     }, 100)
   }
 
-  const IconBtn = ({ icon, label }) => (
-    <div className="flex flex-col items-center text-center gap-2 group cursor-pointer">
-      <div className="w-10 h-10 rounded-full border border-[#ae8a4b] text-[#ae8a4b] flex items-center justify-center group-hover:bg-[#ae8a4b] group-hover:text-white transition-colors duration-300">
-        {icon}
-      </div>
-      <span className="text-[10px] text-gray-400 leading-tight group-hover:text-gray-200 transition-colors">{label}</span>
-    </div>
-  )
 
   return (
     <div 

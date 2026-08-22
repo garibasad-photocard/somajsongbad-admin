@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
 import { Save, Plus, X, List } from 'lucide-react';
 
 const CATEGORIES = [
@@ -31,21 +30,13 @@ export default function HRDropdownSettings() {
   const [saving, setSaving] = useState(false);
   const [newItems, setNewItems] = useState({});
 
+  
+
+  
+
   useEffect(() => {
     fetchDropdowns();
   }, []);
-
-  const fetchDropdowns = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get('/hr-employees/dropdowns');
-      setData(res.data || {});
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSave = async () => {
     try {

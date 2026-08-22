@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Plus, Filter, User, CheckCircle, Clock, Link2, ExternalLink, X, Bookmark } from 'lucide-react'
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Plus, Filter, User, Link2, ExternalLink, X, Bookmark } from 'lucide-react'
 import api from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import { useSettings } from '../../context/SettingsContext'
